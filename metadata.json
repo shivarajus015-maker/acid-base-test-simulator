@@ -1,0 +1,6 @@
+{
+  "name": "Natural Indicators Lab: Hibiscus & Litmus",
+  "description": "Interactive bilingual (English & Kannada) 3D chemistry lab simulation exploring Hibiscus and Litmus natural pH indicators.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

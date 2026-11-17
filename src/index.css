@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', 'Noto Sans Kannada', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #06090e;
+  color: #f8fafc;
+  font-family: var(--font-sans);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Language Modes */
+body.lang-en .kn-text,
+body.lang-en .both-sep {
+  display: none !important;
+}
+
+body.lang-kn .en-text,
+body.lang-kn .both-sep {
+  display: none !important;
+}
+
+body.hide-all-text #css2d-container {
+  display: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 3D CSS2D Labels — Clean, Non-blocking, Never Overlapping */
+#css2d-container {
+  transition: opacity 0.28s ease;
+}
+
+body.is-animating #css2d-container .label-3d {
+  opacity: 0.16 !important;
+  transform: translate(-50%, -100%) scale(0.92) !important;
+}
+
+.label-3d {
+  background: rgba(10, 15, 28, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  padding: 4px 9px;
+  color: #f8fafc;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  pointer-events: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  white-space: nowrap;
+  text-align: center;
+  transform: translate(-50%, -100%);
+}
+
+.label-3d .label-title {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.label-3d .label-sub {
+  font-size: 9px;
+  color: #94a3b8;
+}
+
+.label-3d .swatch-indicator {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+}
+
+.label-3d.tube-pill {
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  background: rgba(10, 15, 28, 0.9);
+  font-variant-numeric: tabular-nums;
+}
+
+body.labels-clean .label-3d.apparatus-label .label-sub {
+  display: none;
+}
+
+body.labels-clean .label-3d.tube-pill .tube-full-info {
+  display: none;
+}
+
+body.labels-full .label-3d.tube-pill .tube-compact-info {
+  display: none;
+}
+
+.label-3d.is-target-highlight {
+  border-color: #fbbf24;
+  background: rgba(30, 22, 8, 0.94);
+  box-shadow: 0 0 16px rgba(251, 191, 36, 0.45);
+}
+
+.label-3d.tested-acid {
+  border-color: #ef4444;
+  background: rgba(38, 10, 18, 0.94);
+}
+
+.label-3d.tested-base {
+  border-color: #10b981;
+  background: rgba(8, 34, 24, 0.94);
+}
+
+.label-3d.tested-neutral {
+  border-color: #a855f7;
+  background: rgba(28, 12, 40, 0.94);
+}
+
+@keyframes toastPop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-toast-pop {
+  animation: toastPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}

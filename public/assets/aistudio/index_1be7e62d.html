@@ -1,0 +1,3440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Natural Indicators: Hibiscus & Litmus | ಆಮ್ಲಗಳು ಮತ್ತು ಪ್ರತ್ಯಾಮ್ಲಗಳು: ದಾಸವಾಳ ಮತ್ತು ಲಿಟ್ಮಸ್ ನೈಸರ್ಗಿಕ ಸೂಚಕಗಳು</title>
+  
+  <!-- Google Fonts: Inter & Noto Sans Kannada -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Kannada:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Three.js CDN with robust multi-CDN fallbacks (cdnjs -> jsdelivr -> unpkg) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"><\/script>');
+    }
+  </script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://unpkg.com/three@0.160.0/build/three.min.js"><\/script>');
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-dark: #06090e;
+      --panel-bg: rgba(13, 20, 36, 0.88);
+      --panel-border: rgba(255, 255, 255, 0.12);
+      --accent-hibiscus: #f43f5e;
+      --accent-litmus: #6366f1;
+      --accent-magenta: #e11d48;
+      --accent-green: #10b981;
+      --accent-blue: #2563eb;
+      --accent-acid: #ef4444;
+      --accent-base: #3b82f6;
+      --accent-neutral: #a855f7;
+      --accent-gold: #f59e0b;
+      --accent-cyan: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-family: 'Inter', 'Noto Sans Kannada', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      font-family: var(--font-family);
+      color: var(--text-main);
+    }
+
+    #webgl-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      outline: none;
+      z-index: 1;
+      touch-action: none;
+    }
+
+    #css2d-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    /* UI Overlay Layer */
+    .ui-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px 18px;
+    }
+
+    .interactive {
+      pointer-events: auto;
+    }
+
+    /* Glass Panels */
+    .glass-card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      box-shadow: 0 10px 35px -5px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    /* Top Bar */
+    header.top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(13, 20, 36, 0.85);
+      padding: 8px 16px;
+      border-radius: 30px;
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(12px);
+    }
+
+    .logo-badge {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #f43f5e 0%, #6366f1 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(244, 63, 94, 0.35);
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .title-texts h1 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .title-texts .kn-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #cbd5e1;
+    }
+
+    .subtitle {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 6px;
+    }
+
+    /* Station Navigation Tabs */
+    .station-tabs {
+      display: flex;
+      background: rgba(13, 20, 36, 0.9);
+      padding: 4px;
+      border-radius: 30px;
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(12px);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: inherit;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.35), rgba(99, 102, 241, 0.35));
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .tab-btn.active.tab-hibiscus {
+      background: rgba(244, 63, 94, 0.3);
+      border-color: rgba(244, 63, 94, 0.6);
+      box-shadow: 0 0 16px rgba(244, 63, 94, 0.35);
+    }
+
+    .tab-btn.active.tab-litmus {
+      background: rgba(99, 102, 241, 0.3);
+      border-color: rgba(99, 102, 241, 0.6);
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+    }
+
+    .tab-btn.active.tab-compare {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: rgba(16, 185, 129, 0.6);
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+    }
+
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--panel-border);
+      color: var(--text-main);
+      padding: 7px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(12px);
+      font-family: inherit;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .pill-btn:active {
+      transform: translateY(1px);
+    }
+
+    .pill-btn.active {
+      background: rgba(244, 63, 94, 0.25);
+      border-color: var(--accent-hibiscus);
+      color: #fda4af;
+      box-shadow: 0 0 12px rgba(244, 63, 94, 0.35);
+    }
+
+    /* Bottom Interactive Guidance Area */
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    .guidance-card {
+      max-width: 620px;
+      padding: 16px 22px;
+      animation: floatIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .guidance-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--accent-hibiscus), var(--accent-litmus));
+      border-radius: 4px;
+    }
+
+    .hint-step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .hint-message-en {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .hint-message-kn {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    .hint-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .click-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.78rem;
+    }
+
+    .action-deck {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .test-counter-card {
+      background: rgba(13, 20, 36, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--panel-border);
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .action-btn {
+      background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(244, 63, 94, 0.45);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: inherit;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(244, 63, 94, 0.6);
+    }
+
+    .action-btn.btn-compare {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.45);
+    }
+
+    /* 3D CSS2D Labels */
+    .label-3d {
+      background: rgba(10, 15, 28, 0.92);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      padding: 5px 11px;
+      color: white;
+      font-family: var(--font-family);
+      font-size: 11px;
+      pointer-events: auto;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      white-space: nowrap;
+      text-align: center;
+      transform: translate(-50%, -100%);
+      backdrop-filter: blur(8px);
+    }
+
+    .label-3d:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+      transform: translate(-50%, -100%) scale(1.06);
+    }
+
+    .label-3d .label-title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .label-3d .label-sub {
+      font-size: 9.5px;
+      color: #94a3b8;
+    }
+
+    .label-3d .swatch-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .label-3d.tested-acid {
+      border-color: #ef4444;
+      background: rgba(30, 10, 15, 0.92);
+    }
+
+    .label-3d.tested-base {
+      border-color: #10b981;
+      background: rgba(10, 30, 20, 0.92);
+    }
+
+    .label-3d.tested-neutral {
+      border-color: #a855f7;
+      background: rgba(25, 10, 35, 0.92);
+    }
+
+    /* Comparison Modal */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(4, 7, 13, 0.85);
+      backdrop-filter: blur(14px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: auto;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 1100px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--panel-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .modal-body {
+      padding: 20px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* Results Table */
+    .matrix-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--panel-border);
+      background: rgba(10, 15, 30, 0.6);
+      margin-bottom: 20px;
+    }
+
+    .matrix-table th {
+      background: rgba(30, 41, 59, 0.8);
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #cbd5e1;
+      border-bottom: 1px solid var(--panel-border);
+      text-align: left;
+    }
+
+    .matrix-table td {
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      vertical-align: middle;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .matrix-table tr:hover td {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .badge-cell {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: 14px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-acid {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .badge-base {
+      background: rgba(37, 99, 235, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(37, 99, 235, 0.4);
+    }
+
+    .badge-neutral {
+      background: rgba(168, 85, 247, 0.2);
+      color: #d8b4fe;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-right: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      vertical-align: middle;
+    }
+
+    /* Result Boxes */
+    .result-boxes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .result-box {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--panel-border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-box.box-hibiscus::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: #f43f5e;
+    }
+
+    .result-box.box-litmus::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: #6366f1;
+    }
+
+    .result-box h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .result-box p {
+      font-size: 0.84rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+      margin-bottom: 6px;
+    }
+
+    .result-box p.kn-text {
+      color: #cbd5e1;
+      font-size: 0.82rem;
+      margin-bottom: 0;
+    }
+
+    .modal-footer {
+      padding: 14px 24px;
+      border-top: 1px solid var(--panel-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    /* Cursor Tooltip */
+    #cursor-tooltip {
+      position: absolute;
+      z-index: 50;
+      pointer-events: none;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #ffffff;
+      transform: translate(12px, 12px);
+      display: none;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Language Modes */
+    body.lang-en .kn-text { display: none !important; }
+    body.lang-kn .en-text { display: none !important; }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 900px) {
+      .result-boxes-grid { grid-template-columns: 1fr; }
+      .bottom-bar { flex-direction: column; align-items: stretch; }
+      .action-deck { align-items: stretch; }
+      .guidance-card { max-width: 100%; }
+    }
+  </style>
+</head>
+<body class="lang-both">
+
+  <!-- 3D Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <!-- CSS2D Container for Crisp 3D Text & Labels -->
+  <div id="css2d-container"></div>
+
+  <!-- Interactive 3D Cursor Tooltip -->
+  <div id="cursor-tooltip">Interactive Item</div>
+
+  <!-- UI Overlay Layer -->
+  <div class="ui-layer">
+    <!-- Top Header -->
+    <header class="top-bar">
+      <div class="title-group interactive">
+        <div class="logo-badge">🌺</div>
+        <div class="title-texts">
+          <h1>
+            <span class="en-text">Natural Indicators</span>
+            <span class="kn-text kn-title">| ಆಮ್ಲಗಳು ಮತ್ತು ಪ್ರತ್ಯಾಮ್ಲಗಳು: ನೈಸರ್ಗಿಕ ಸೂಚಕಗಳು</span>
+          </h1>
+          <div class="subtitle">
+            <span class="en-text">Hibiscus Rosa-Sinensis &amp; Litmus Simulation</span>
+            <span class="kn-text">• ದಾಸವಾಳ ಮತ್ತು ಲಿಟ್ಮಸ್ ಲ್ಯಾಬ್ ಸಿಮ್ಯುಲೇಶನ್</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Station Tabs -->
+      <div class="station-tabs interactive">
+        <button id="tab-hibiscus" class="tab-btn active tab-hibiscus">
+          <span>🌺</span>
+          <span class="en-text">Hibiscus Station</span>
+          <span class="kn-text">ದಾಸವಾಳ</span>
+        </button>
+        <button id="tab-litmus" class="tab-btn tab-litmus">
+          <span>📜</span>
+          <span class="en-text">Litmus Station</span>
+          <span class="kn-text">ಲಿಟ್ಮಸ್</span>
+        </button>
+        <button id="tab-compare" class="tab-btn tab-compare">
+          <span>📊</span>
+          <span class="en-text">Compare Both</span>
+          <span class="kn-text">ಎರಡನ್ನೂ ಹೋಲಿಸಿ</span>
+        </button>
+      </div>
+
+      <div class="controls-group interactive">
+        <!-- Expandable Solutions Toggle -->
+        <button id="roster-toggle-btn" class="pill-btn" title="Toggle More Solutions / ಇನ್ನಷ್ಟು ಮಾದರಿಗಳು">
+          <span>🧪</span>
+          <span id="roster-btn-text">8 Samples (Normal)</span>
+        </button>
+
+        <!-- Camera Reset -->
+        <button id="cam-reset-btn" class="pill-btn" title="Reset Camera View / ಕ್ಯಾಮೆರಾ ಮರುಹೊಂದಿಸಿ">
+          <span>🎥</span>
+          <span class="en-text">View</span>
+          <span class="kn-text">ನೋಟ</span>
+        </button>
+
+        <!-- Language Switcher -->
+        <button id="lang-btn" class="pill-btn" title="Toggle Language / ಭಾಷೆ ಬದಲಿಸಿ">
+          <span>🌐</span>
+          <span id="lang-text">EN + ಕನ್ನಡ</span>
+        </button>
+
+        <!-- Ambient Sound Toggle -->
+        <button id="sound-btn" class="pill-btn" title="Toggle Audio (Muted by default) / ಶಬ್ದ">
+          <span id="sound-icon">🔇</span>
+          <span>Audio</span>
+        </button>
+
+        <!-- Reset Button -->
+        <button id="reset-btn" class="pill-btn" title="Reset All (Key: R) / ಎಲ್ಲವನ್ನೂ ಮರುಹೊಂದಿಸಿ">
+          <span>↺</span>
+          <span class="en-text">Reset All</span>
+          <span class="kn-text">ಮರುಹೊಂದಿಸಿ</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Bottom Guidance & Controls Bar -->
+    <div class="bottom-bar">
+      <!-- Floating Step Guidance Card -->
+      <div id="guidance-card" class="glass-card guidance-card interactive">
+        <div id="hint-badge" class="hint-step-badge">
+          <span>🌸</span>
+          <span id="hint-step-title">STAGE A0: PICK HIBISCUS PETALS</span>
+        </div>
+        <div id="hint-msg-en" class="hint-message-en">Click the blooming hibiscus flower petals to pluck them into the mortar!</div>
+        <div id="hint-msg-kn" class="hint-message-kn">ದಾಸವಾಳ ಹೂವಿನ ದಳಗಳನ್ನು ಒರಳಿನಲ್ಲಿ ಕೀಳಲು ದಳಗಳ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ!</div>
+        
+        <div class="hint-actions">
+          <div id="step-counter-badge" class="click-counter">
+            <span>🌸 Petals Plucked:</span>
+            <strong id="step-count-text" style="color: var(--accent-hibiscus); margin-left: 4px;">0 / 4</strong>
+          </div>
+          <button id="auto-step-btn" class="pill-btn" style="padding: 4px 10px; font-size: 0.74rem;">
+            <span>⚡</span>
+            <span class="en-text">Auto-Fill Step</span>
+            <span class="kn-text">ತ್ವರಿತ ಭರ್ತಿ</span>
+          </button>
+          <div id="guidance-extra-hint" style="font-size: 0.78rem; color: var(--text-muted);">
+            Tip: Drag or click objects to interact. Use 1, 2, 3 keys to jump stations.
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Deck & Status -->
+      <div class="action-deck interactive">
+        <div class="test-counter-card">
+          <span>🌺 Hibiscus: <strong id="hibiscus-tested-count" style="color: var(--accent-hibiscus);">0/8</strong></span>
+          <span style="opacity: 0.3;">|</span>
+          <span>📜 Litmus: <strong id="litmus-tested-count" style="color: var(--accent-litmus);">0/8</strong></span>
+        </div>
+
+        <button id="view-matrix-btn" class="action-btn btn-compare">
+          <span>📊</span>
+          <span class="en-text">View Comparison Matrix</span>
+          <span class="kn-text">ಪೂರ್ಣ ಫಲಿತಾಂಶ ಕೋಷ್ಟಕ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Matrix & Results Modal -->
+  <div id="results-modal" class="modal-overlay">
+    <div class="glass-card modal-content">
+      <div class="modal-header">
+        <div>
+          <h2 style="font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            <span>🔬</span>
+            <span class="en-text">Complete Indicator Comparison Matrix</span>
+            <span class="kn-text">ನೈಸರ್ಗಿಕ ಸೂಚಕಗಳ ಪೂರ್ಣ ತುಲನಾತ್ಮಕ ಕೋಷ್ಟಕ</span>
+          </h2>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 3px;">
+            <span class="en-text">Testing Acids and Bases with Hibiscus AND Litmus (Red &amp; Blue Paper + Solution)</span>
+            <span class="kn-text">ದಾಸವಾಳ ಮತ್ತು ಲಿಟ್ಮಸ್ ನೈಸರ್ಗಿಕ ಸೂಚಕಗಳೊಂದಿಗೆ ಆಮ್ಲ-ಪ್ರತ್ಯಾಮ್ಲಗಳ ವೀಕ್ಷಣಾ ಫಲಿತಾಂಶ</span>
+          </p>
+        </div>
+        <button id="close-modal-btn" class="pill-btn">✕ Close</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Roster Filter Buttons -->
+        <div style="display: flex; gap: 8px; margin-bottom: 14px; align-items: center;">
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">Filter / ಫಿಲ್ಟರ್:</span>
+          <button class="pill-btn filter-btn active" data-filter="all">All / ಎಲ್ಲವೂ</button>
+          <button class="pill-btn filter-btn" data-filter="acid">Acids / ಆಮ್ಲಗಳು</button>
+          <button class="pill-btn filter-btn" data-filter="base">Bases / ಪ್ರತ್ಯಾಮ್ಲಗಳು</button>
+          <button class="pill-btn filter-btn" data-filter="neutral">Neutral / ತಟಸ್ಥ</button>
+        </div>
+
+        <!-- Table -->
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>
+                <span class="en-text">Substance</span>
+                <span class="kn-text">ಪದಾರ್ಥ</span>
+              </th>
+              <th>
+                <span class="en-text">Initial Color</span>
+                <span class="kn-text">ಆರಂಭಿಕ ಬಣ್ಣ</span>
+              </th>
+              <th>
+                <span class="en-text">Hibiscus Result</span>
+                <span class="kn-text">ದಾಸವಾಳ ಸಾರ</span>
+              </th>
+              <th>
+                <span class="en-text">Litmus Paper (Red→?)</span>
+                <span class="kn-text">ಕೆಂಪು ಲಿಟ್ಮಸ್</span>
+              </th>
+              <th>
+                <span class="en-text">Litmus Paper (Blue→?)</span>
+                <span class="kn-text">ನೀಲಿ ಲಿಟ್ಮಸ್</span>
+              </th>
+              <th>
+                <span class="en-text">Litmus Solution</span>
+                <span class="kn-text">ಲಿಟ್ಮಸ್ ದ್ರಾವಣ</span>
+              </th>
+              <th>
+                <span class="en-text">Classification</span>
+                <span class="kn-text">ವರ್ಗೀಕರಣ</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="matrix-tbody">
+            <!-- Injected by JavaScript -->
+          </tbody>
+        </table>
+
+        <!-- The Two Official Bilingual Scientific Result Boxes -->
+        <div class="result-boxes-grid">
+          <!-- 1) Hibiscus Result Box -->
+          <div class="result-box box-hibiscus">
+            <h3>
+              <span>🌺</span>
+              <span class="en-text">Hibiscus Indicator Principle</span>
+              <span class="kn-text">ದಾಸವಾಳ ಸೂಚಕದ ತತ್ವ</span>
+            </h3>
+            <p class="en-text">
+              "Hibiscus turns dark pink/magenta in acidic solutions and green in basic solutions, making it an excellent natural indicator!"
+            </p>
+            <p class="kn-text">
+              "(ದಾಸವಾಳದ ರಸವು ಆಮ್ಲದಲ್ಲಿ ಗುಲಾಬಿ ಮತ್ತು ಪ್ರತ್ಯಾಮ್ಲದಲ್ಲಿ ಹಸಿರು ಬಣ್ಣಕ್ಕೆ ಬದಲಾಗುತ್ತದೆ — ಇದು ಅತ್ಯುತ್ತಮ ನೈಸರ್ಗಿಕ ಸೂಚಕವಾಗಿದೆ!)"
+            </p>
+          </div>
+
+          <!-- 2) Litmus Result Box -->
+          <div class="result-box box-litmus">
+            <h3>
+              <span>📜</span>
+              <span class="en-text">Litmus Indicator Principle</span>
+              <span class="kn-text">ಲಿಟ್ಮಸ್ ಸೂಚಕದ ತತ್ವ</span>
+            </h3>
+            <p class="en-text">
+              "Blue litmus paper turns red in acids; red litmus paper turns blue in bases. Litmus stays unchanged in neutral solutions — a classic natural indicator!"
+            </p>
+            <p class="kn-text">
+              "(ನೀಲಿ ಲಿಟ್ಮಸ್ ಕಾಗದವು ಆಮ್ಲದಲ್ಲಿ ಕೆಂಪಾಗುತ್ತದೆ; ಕೆಂಪು ಲಿಟ್ಮಸ್ ಕಾಗದವು ಪ್ರತ್ಯಾಮ್ಲದಲ್ಲಿ ನೀಲಿಯಾಗುತ್ತದೆ. ತಟಸ್ಥ ದ್ರಾವಣಗಳಲ್ಲಿ ಲಿಟ್ಮಸ್ ಬದಲಾಗುವುದಿಲ್ಲ — ಇದು ಶ್ರೇಷ್ಠ ನೈಸರ್ಗಿಕ ಸೂಚಕ!)"
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="modal-reset-btn" class="pill-btn">
+          <span>↺</span>
+          <span class="en-text">Reset Both Stations</span>
+          <span class="kn-text">ಮರುಹೊಂದಿಸಿ</span>
+        </button>
+        <button id="modal-resume-btn" class="action-btn">
+          <span>🔬</span>
+          <span class="en-text">Back to 3D Workbench</span>
+          <span class="kn-text">ಪ್ರಯೋಗ ಮುಂದುವರಿಸಿ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Self-Contained Simulation Script -->
+  <script>
+    // Verify Three.js loaded
+    if (typeof THREE === 'undefined') {
+      const errorBox = document.createElement('div');
+      errorBox.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,10,25,0.95);border:2px solid #f43f5e;padding:24px 32px;border-radius:16px;color:#fff;text-align:center;font-family:sans-serif;z-index:999;max-width:540px;';
+      errorBox.innerHTML = `
+        <h2 style="color:#f43f5e;margin-bottom:12px;">⚠️ Three.js CDN Loading Notice</h2>
+        <p style="margin-bottom:10px;">Three.js library is loading from CDN. Please check your internet connection or reload the page.</p>
+        <p style="color:#cbd5e1;font-size:0.85rem;">(ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ: Three.js 3D ಲೈಬ್ರರಿಯನ್ನು ಲೋಡ್ ಮಾಡಲು ಇಂಟರ್ನೆಟ್ ಅಗತ್ಯವಿದೆ.)</p>
+      `;
+      document.body.appendChild(errorBox);
+      throw new Error('Three.js failed to load from CDNs');
+    }
+
+    /* =========================================================================
+       STANDALONE ORBITCONTROLS (100% Reliable, Zero bare-import errors)
+       ========================================================================= */
+    class StandaloneOrbitControls {
+      constructor(camera, domElement) {
+        this.camera = camera;
+        this.domElement = domElement || document.body;
+        this.target = new THREE.Vector3(0, 0, 0);
+        this.minDistance = 2.0;
+        this.maxDistance = 25.0;
+        this.minPolarAngle = 0.05;
+        this.maxPolarAngle = Math.PI / 2 - 0.04;
+        this.enableDamping = true;
+        this.dampingFactor = 0.08;
+
+        this.spherical = new THREE.Spherical();
+        this.sphericalDelta = new THREE.Spherical();
+        this.panOffset = new THREE.Vector3();
+
+        const offset = new THREE.Vector3().subVectors(this.camera.position, this.target);
+        this.spherical.setFromVector3(offset);
+
+        this.isPointerDown = false;
+        this.pointerType = 'none';
+        this.prevPointerPos = { x: 0, y: 0 };
+
+        this._onPointerDown = this.onPointerDown.bind(this);
+        this._onPointerMove = this.onPointerMove.bind(this);
+        this._onPointerUp = this.onPointerUp.bind(this);
+        this._onWheel = this.onWheel.bind(this);
+
+        this.domElement.addEventListener('pointerdown', this._onPointerDown);
+        window.addEventListener('pointermove', this._onPointerMove);
+        window.addEventListener('pointerup', this._onPointerUp);
+        this.domElement.addEventListener('wheel', this._onWheel, { passive: false });
+        this.domElement.addEventListener('contextmenu', (e) => e.preventDefault());
+      }
+
+      onPointerDown(e) {
+        this.isPointerDown = true;
+        this.pointerType = (e.button === 2 || e.shiftKey) ? 'pan' : 'rotate';
+        this.prevPointerPos = { x: e.clientX, y: e.clientY };
+      }
+
+      onPointerMove(e) {
+        if (!this.isPointerDown) return;
+        const dx = e.clientX - this.prevPointerPos.x;
+        const dy = e.clientY - this.prevPointerPos.y;
+        this.prevPointerPos = { x: e.clientX, y: e.clientY };
+
+        if (this.pointerType === 'rotate') {
+          const rotSpeed = 0.005;
+          this.sphericalDelta.theta -= dx * rotSpeed;
+          this.sphericalDelta.phi -= dy * rotSpeed;
+        } else if (this.pointerType === 'pan') {
+          const panSpeed = 0.004 * this.spherical.radius;
+          const vX = new THREE.Vector3().setFromMatrixColumn(this.camera.matrix, 0);
+          const vY = new THREE.Vector3().setFromMatrixColumn(this.camera.matrix, 1);
+          vX.multiplyScalar(-dx * panSpeed);
+          vY.multiplyScalar(dy * panSpeed);
+          this.panOffset.add(vX).add(vY);
+        }
+      }
+
+      onPointerUp() {
+        this.isPointerDown = false;
+        this.pointerType = 'none';
+      }
+
+      onWheel(e) {
+        e.preventDefault();
+        const zoomFactor = e.deltaY < 0 ? 0.93 : 1.07;
+        this.spherical.radius = THREE.MathUtils.clamp(
+          this.spherical.radius * zoomFactor,
+          this.minDistance,
+          this.maxDistance
+        );
+      }
+
+      update() {
+        this.target.add(this.panOffset);
+        this.panOffset.set(0, 0, 0);
+
+        if (this.enableDamping) {
+          this.spherical.theta += this.sphericalDelta.theta * (1 - this.dampingFactor);
+          this.spherical.phi += this.sphericalDelta.phi * (1 - this.dampingFactor);
+          this.sphericalDelta.theta *= this.dampingFactor;
+          this.sphericalDelta.phi *= this.dampingFactor;
+        } else {
+          this.spherical.theta += this.sphericalDelta.theta;
+          this.spherical.phi += this.sphericalDelta.phi;
+          this.sphericalDelta.set(0, 0, 0);
+        }
+
+        this.spherical.phi = THREE.MathUtils.clamp(this.spherical.phi, this.minPolarAngle, this.maxPolarAngle);
+        this.spherical.radius = THREE.MathUtils.clamp(this.spherical.radius, this.minDistance, this.maxDistance);
+
+        const offset = new THREE.Vector3().setFromSpherical(this.spherical);
+        this.camera.position.copy(this.target).add(offset);
+        this.camera.lookAt(this.target);
+      }
+    }
+
+    /* =========================================================================
+       CSS2D RENDERER (Cleanly mounts DOM labels into 3D world space)
+       ========================================================================= */
+    class CSS2DObject extends THREE.Object3D {
+      constructor(element = document.createElement('div')) {
+        super();
+        this.isCSS2DObject = true;
+        this.element = element;
+        this.element.style.position = 'absolute';
+        this.element.style.userSelect = 'none';
+        this.element.setAttribute('draggable', 'false');
+      }
+    }
+
+    class CSS2DRenderer {
+      constructor(parameters = {}) {
+        const _this = this;
+        let _width, _height, _widthHalf, _heightHalf;
+        const _vector = new THREE.Vector3();
+        const _viewMatrix = new THREE.Matrix4();
+        const _viewProjectionMatrix = new THREE.Matrix4();
+        const domElement = parameters.element !== undefined ? parameters.element : document.getElementById('css2d-container');
+        this.domElement = domElement;
+
+        this.render = function (scene, camera) {
+          if (scene.matrixWorldAutoUpdate === true) scene.updateMatrixWorld();
+          if (camera.parent === null && camera.matrixWorldAutoUpdate === true) camera.updateMatrixWorld();
+          _viewMatrix.copy(camera.matrixWorldInverse);
+          _viewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, _viewMatrix);
+          renderObject(scene, scene, camera);
+        };
+
+        this.setSize = function (width, height) {
+          _width = width;
+          _height = height;
+          _widthHalf = _width / 2;
+          _heightHalf = _height / 2;
+          domElement.style.width = width + 'px';
+          domElement.style.height = height + 'px';
+        };
+
+        function renderObject(object, scene, camera) {
+          if (object.isCSS2DObject) {
+            if (object.element.parentNode !== domElement) {
+              domElement.appendChild(object.element);
+            }
+            _vector.setFromMatrixPosition(object.matrixWorld);
+            _vector.applyMatrix4(_viewProjectionMatrix);
+            const visible = (object.visible === true) && (_vector.z >= -1 && _vector.z <= 1);
+            object.element.style.display = visible ? '' : 'none';
+            if (visible) {
+              const x = (_vector.x * _widthHalf + _widthHalf);
+              const y = (-_vector.y * _heightHalf + _heightHalf);
+              object.element.style.transform = `translate(-50%, -50%) translate3d(${x}px,${y}px,0)`;
+            }
+          }
+          if (object && object.children) {
+            for (let i = 0, l = object.children.length; i < l; i++) {
+              renderObject(object.children[i], scene, camera);
+            }
+          }
+        }
+      }
+    }
+
+    /* =========================================================================
+       AUDIO SYNTHESIZER (WebAudio API - 100% Procedural synthesis)
+       ========================================================================= */
+    class LabAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.isMuted = true;
+        this.ambientGain = null;
+        this.ambientOsc = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+          this.setupAmbient();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      setupAmbient() {
+        if (!this.ctx) return;
+        this.ambientGain = this.ctx.createGain();
+        this.ambientGain.gain.setValueAtTime(0.0001, this.ctx.currentTime);
+        this.ambientGain.connect(this.ctx.destination);
+
+        const osc = this.ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(55, this.ctx.currentTime);
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(120, this.ctx.currentTime);
+
+        osc.connect(filter);
+        filter.connect(this.ambientGain);
+        osc.start();
+        this.ambientOsc = osc;
+      }
+
+      setMute(mute) {
+        this.isMuted = mute;
+        if (!this.ctx) return;
+        if (this.ambientGain) {
+          const target = this.isMuted ? 0.0001 : 0.035;
+          this.ambientGain.gain.setTargetAtTime(target, this.ctx.currentTime, 0.2);
+        }
+      }
+
+      playPluck() {
+        if (this.isMuted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      }
+
+      playCrush() {
+        if (this.isMuted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(120, now);
+        osc.frequency.exponentialRampToValueAtTime(45, now + 0.24);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+
+      playGrind() {
+        if (this.isMuted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.linearRampToValueAtTime(260, now + 0.15);
+        osc.frequency.linearRampToValueAtTime(140, now + 0.35);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.4);
+      }
+
+      playPour() {
+        if (this.isMuted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const bufferSize = Math.floor(this.ctx.sampleRate * 0.8);
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.7));
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(650, now);
+        filter.frequency.exponentialRampToValueAtTime(1200, now + 0.6);
+        filter.Q.value = 3.5;
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.78);
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+        noise.start(now);
+      }
+
+      playPlink(stage = 1) {
+        if (this.isMuted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const freqs = [1046.5, 1318.51, 1567.98];
+        const freq = freqs[Math.min(stage - 1, 2)];
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.48);
+      }
+
+      playPaperDip() {
+        if (this.isMuted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(780, now + 0.15);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+
+      playPin() {
+        if (this.isMuted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(180, now + 0.06);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.1);
+      }
+
+      playSuccess() {
+        if (this.isMuted || !this.ctx) return;
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((freq, idx) => {
+          const now = this.ctx.currentTime + idx * 0.11;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.6);
+        });
+      }
+    }
+
+    const audio = new LabAudioEngine();
+
+    /* =========================================================================
+       SUBSTANCE ROSTER (8 Core + 5 Expandable = 13 Total)
+       ========================================================================= */
+    const ALL_SUBSTANCES = [
+      {
+        id: 0,
+        nameEn: 'Lemon Juice',
+        nameKn: 'ನಿಂಬೆ ರಸ',
+        typeEn: 'Acid',
+        typeKn: 'ಆಮ್ಲ',
+        category: 'acid',
+        initialColorHex: '#fef08a',
+        initialNameEn: 'Pale Straw (ತಿಳಿ ಹಳದಿ)',
+        hibiscusColorHex: '#e11d48',
+        hibiscusResultEn: 'Magenta / Dark Pink',
+        hibiscusResultKn: 'ಗಾಢ ಗುಲಾಬಿ (ಮೆಜೆಂಟಾ)',
+        litmusPaperRed: 'Stays Red / ಕೆಂಪಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusPaperBlue: 'Turns Red / ಕೆಂಪಾಗುತ್ತದೆ',
+        litmusSolutionHex: '#dc2626',
+        litmusSolutionResultEn: 'Red / ಕೆಂಪು',
+        litmusSolutionResultKn: 'ಕೆಂಪು ಬಣ್ಣ'
+      },
+      {
+        id: 1,
+        nameEn: 'Vinegar',
+        nameKn: 'ವಿನೆಗರ್',
+        typeEn: 'Acid',
+        typeKn: 'ಆಮ್ಲ',
+        category: 'acid',
+        initialColorHex: '#f8fafc',
+        initialNameEn: 'Clear (ಸ್ಪಷ್ಟ ನೀರು)',
+        hibiscusColorHex: '#ec4899',
+        hibiscusResultEn: 'Bright Magenta',
+        hibiscusResultKn: 'ಗಾಢ ಗುಲಾಬಿ ಬಣ್ಣ',
+        litmusPaperRed: 'Stays Red / ಕೆಂಪಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusPaperBlue: 'Turns Red / ಕೆಂಪಾಗುತ್ತದೆ',
+        litmusSolutionHex: '#e11d48',
+        litmusSolutionResultEn: 'Red / ಕೆಂಪು',
+        litmusSolutionResultKn: 'ಕೆಂಪು ಬಣ್ಣ'
+      },
+      {
+        id: 2,
+        nameEn: 'Hydrochloric Acid (dilute)',
+        nameKn: 'ಸಾರರಿಕ್ತ HCl',
+        typeEn: 'Strong Acid',
+        typeKn: 'ಪ್ರಬಲ ಆಮ್ಲ',
+        category: 'acid',
+        initialColorHex: '#f1f5f9',
+        initialNameEn: 'Clear (ಬಣ್ಣರಹಿತ)',
+        hibiscusColorHex: '#be123c',
+        hibiscusResultEn: 'Intense Magenta',
+        hibiscusResultKn: 'ತೀವ್ರ ಗುಲಾಬಿ ಬಣ್ಣ',
+        litmusPaperRed: 'Stays Red / ಕೆಂಪಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusPaperBlue: 'Turns Red / ಕೆಂಪಾಗುತ್ತದೆ',
+        litmusSolutionHex: '#b91c1c',
+        litmusSolutionResultEn: 'Bright Red / ಪ್ರಕಾಶಮಾನ ಕೆಂಪು',
+        litmusSolutionResultKn: 'ಪ್ರಕಾಶಮಾನ ಕೆಂಪು'
+      },
+      {
+        id: 3,
+        nameEn: 'Baking Soda Solution',
+        nameKn: 'ಅಡುಗೆ ಸೋಡಾ ದ್ರಾವಣ',
+        typeEn: 'Base',
+        typeKn: 'ಪ್ರತ್ಯಾಮ್ಲ',
+        category: 'base',
+        initialColorHex: '#f8fafc',
+        initialNameEn: 'Hazy White (ತಿಳಿ ಬಿಳಿ)',
+        hibiscusColorHex: '#059669',
+        hibiscusResultEn: 'Deep Green',
+        hibiscusResultKn: 'ಗಾಢ ಹಸಿರು',
+        litmusPaperRed: 'Turns Blue / ನೀಲಿಯಾಗುತ್ತದೆ',
+        litmusPaperBlue: 'Stays Blue / ನೀಲಿಯಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusSolutionHex: '#2563eb',
+        litmusSolutionResultEn: 'Blue / ನೀಲಿ',
+        litmusSolutionResultKn: 'ನೀಲಿ ಬಣ್ಣ'
+      },
+      {
+        id: 4,
+        nameEn: 'Soap Solution',
+        nameKn: 'ಸೋಪು ದ್ರಾವಣ',
+        typeEn: 'Base',
+        typeKn: 'ಪ್ರತ್ಯಾಮ್ಲ',
+        category: 'base',
+        initialColorHex: '#e2e8f0',
+        initialNameEn: 'Cloudy White (ಮಂದ ಬಿಳಿ)',
+        hibiscusColorHex: '#10b981',
+        hibiscusResultEn: 'Emerald Green',
+        hibiscusResultKn: 'ಹಸಿರು ಬಣ್ಣ',
+        litmusPaperRed: 'Turns Blue / ನೀಲಿಯಾಗುತ್ತದೆ',
+        litmusPaperBlue: 'Stays Blue / ನೀಲಿಯಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusSolutionHex: '#1d4ed8',
+        litmusSolutionResultEn: 'Blue / ನೀಲಿ',
+        litmusSolutionResultKn: 'ನೀಲಿ ಬಣ್ಣ'
+      },
+      {
+        id: 5,
+        nameEn: 'Sodium Hydroxide (dilute)',
+        nameKn: 'ಸಾರರಿಕ್ತ NaOH',
+        typeEn: 'Strong Base',
+        typeKn: 'ಪ್ರಬಲ ಪ್ರತ್ಯಾಮ್ಲ',
+        category: 'base',
+        initialColorHex: '#f8fafc',
+        initialNameEn: 'Clear (ಸ್ಪಷ್ಟ ನೀರು)',
+        hibiscusColorHex: '#047857',
+        hibiscusResultEn: 'Dark Forest Green',
+        hibiscusResultKn: 'ಗಾಢ ಹಸಿರು',
+        litmusPaperRed: 'Turns Blue / ನೀಲಿಯಾಗುತ್ತದೆ',
+        litmusPaperBlue: 'Stays Blue / ನೀಲಿಯಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusSolutionHex: '#1e40af',
+        litmusSolutionResultEn: 'Royal Blue / ಗಾಢ ನೀಲಿ',
+        litmusSolutionResultKn: 'ಗಾಢ ರಾಜನೀಲಿ'
+      },
+      {
+        id: 6,
+        nameEn: 'Pure Water',
+        nameKn: 'ಶುದ್ಧ ನೀರು',
+        typeEn: 'Neutral',
+        typeKn: 'ತಟಸ್ಥ',
+        category: 'neutral',
+        initialColorHex: '#f0f9ff',
+        initialNameEn: 'Colorless (ಬಣ್ಣರಹಿತ)',
+        hibiscusColorHex: '#881337',
+        hibiscusResultEn: 'Reddish-Purple (No Change)',
+        hibiscusResultKn: 'ಬದಲಾವಣೆಯಿಲ್ಲ (ನೇರಳೆ-ಕೆಂಪು)',
+        litmusPaperRed: 'No Change (Red) / ಬದಲಾವಣೆಯಿಲ್ಲ',
+        litmusPaperBlue: 'No Change (Blue) / ಬದಲಾವಣೆಯಿಲ್ಲ',
+        litmusSolutionHex: '#7c3aed',
+        litmusSolutionResultEn: 'Purple (No Change)',
+        litmusSolutionResultKn: 'ನೇರಳೆ (ಬದಲಾವಣೆಯಿಲ್ಲ)'
+      },
+      {
+        id: 7,
+        nameEn: 'Milk',
+        nameKn: 'ಹಾಲು',
+        typeEn: 'Mild Acid',
+        typeKn: 'ಸೌಮ್ಯ ಆಮ್ಲ',
+        category: 'acid',
+        initialColorHex: '#ffffff',
+        initialNameEn: 'Opaque White (ಹಾಲು ಬಿಳಿ)',
+        hibiscusColorHex: '#f472b6',
+        hibiscusResultEn: 'Light Pink Tint',
+        hibiscusResultKn: 'ತಿಳಿ ಗುಲಾಬಿ ಬಣ್ಣ',
+        litmusPaperRed: 'Stays Red / ಕೆಂಪಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusPaperBlue: 'Turns Pinkish-Red / ತಿಳಿ ಕೆಂಪು',
+        litmusSolutionHex: '#c084fc',
+        litmusSolutionResultEn: 'Faint Reddish / ತಿಳಿ ಕೆಂಪು',
+        litmusSolutionResultKn: 'ತಿಳಿ ಕೆಂಪು'
+      },
+      // Expandable items (8 - 12)
+      {
+        id: 8,
+        nameEn: 'Tamarind Water',
+        nameKn: 'ಹುಣಸೆಹಣ್ಣಿನ ನೀರು',
+        typeEn: 'Acid',
+        typeKn: 'ಆಮ್ಲ',
+        category: 'acid',
+        initialColorHex: '#fef3c7',
+        initialNameEn: 'Amber Brown (ತಿಳಿ ಕಂದು)',
+        hibiscusColorHex: '#e11d48',
+        hibiscusResultEn: 'Dark Pink / Magenta',
+        hibiscusResultKn: 'ಗಾಢ ಗುಲಾಬಿ ಬಣ್ಣ',
+        litmusPaperRed: 'Stays Red / ಕೆಂಪಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusPaperBlue: 'Turns Red / ಕೆಂಪಾಗುತ್ತದೆ',
+        litmusSolutionHex: '#dc2626',
+        litmusSolutionResultEn: 'Red / ಕೆಂಪು',
+        litmusSolutionResultKn: 'ಕೆಂಪು ಬಣ್ಣ'
+      },
+      {
+        id: 9,
+        nameEn: 'Lime Water (Ca(OH)2)',
+        nameKn: 'ಸುಣ್ಣದ ತಿಳಿನೀರು',
+        typeEn: 'Base',
+        typeKn: 'ಪ್ರತ್ಯಾಮ್ಲ',
+        category: 'base',
+        initialColorHex: '#f8fafc',
+        initialNameEn: 'Clear Liquid (ತಿಳಿನೀರು)',
+        hibiscusColorHex: '#059669',
+        hibiscusResultEn: 'Emerald Green',
+        hibiscusResultKn: 'ಹಸಿರು ಬಣ್ಣ',
+        litmusPaperRed: 'Turns Blue / ನೀಲಿಯಾಗುತ್ತದೆ',
+        litmusPaperBlue: 'Stays Blue / ನೀಲಿಯಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusSolutionHex: '#2563eb',
+        litmusSolutionResultEn: 'Blue / ನೀಲಿ',
+        litmusSolutionResultKn: 'ನೀಲಿ ಬಣ್ಣ'
+      },
+      {
+        id: 10,
+        nameEn: 'Salt Water (NaCl)',
+        nameKn: 'ಉಪ್ಪು ನೀರು',
+        typeEn: 'Neutral',
+        typeKn: 'ತಟಸ್ಥ',
+        category: 'neutral',
+        initialColorHex: '#f0fdf4',
+        initialNameEn: 'Clear (ಸ್ಪಷ್ಟ ನೀರು)',
+        hibiscusColorHex: '#881337',
+        hibiscusResultEn: 'Reddish-Purple (No Change)',
+        hibiscusResultKn: 'ಬದಲಾವಣೆಯಿಲ್ಲ',
+        litmusPaperRed: 'No Change (Red) / ಬದಲಾವಣೆಯಿಲ್ಲ',
+        litmusPaperBlue: 'No Change (Blue) / ಬದಲಾವಣೆಯಿಲ್ಲ',
+        litmusSolutionHex: '#7c3aed',
+        litmusSolutionResultEn: 'Purple (No Change)',
+        litmusSolutionResultKn: 'ನೇರಳೆ (ಬದಲಾವಣೆಯಿಲ್ಲ)'
+      },
+      {
+        id: 11,
+        nameEn: 'Tomato Juice',
+        nameKn: 'ಟೊಮೆಟೊ ರಸ',
+        typeEn: 'Acid',
+        typeKn: 'ಆಮ್ಲ',
+        category: 'acid',
+        initialColorHex: '#fee2e2',
+        initialNameEn: 'Light Red (ತಿಳಿ ಕೆಂಪು)',
+        hibiscusColorHex: '#e11d48',
+        hibiscusResultEn: 'Magenta / Dark Pink',
+        hibiscusResultKn: 'ಗಾಢ ಗುಲಾಬಿ ಬಣ್ಣ',
+        litmusPaperRed: 'Stays Red / ಕೆಂಪಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusPaperBlue: 'Turns Red / ಕೆಂಪಾಗುತ್ತದೆ',
+        litmusSolutionHex: '#dc2626',
+        litmusSolutionResultEn: 'Red / ಕೆಂಪು',
+        litmusSolutionResultKn: 'ಕೆಂಪು ಬಣ್ಣ'
+      },
+      {
+        id: 12,
+        nameEn: 'Toothpaste Slurry',
+        nameKn: 'ಟೂತ್‌ಪೇಸ್ಟ್ ದ್ರಾವಣ',
+        typeEn: 'Base',
+        typeKn: 'ಪ್ರತ್ಯಾಮ್ಲ',
+        category: 'base',
+        initialColorHex: '#f1f5f9',
+        initialNameEn: 'Chalky White (ಸೀಮೆಸುಣ್ಣದ ಬಿಳಿ)',
+        hibiscusColorHex: '#10b981',
+        hibiscusResultEn: 'Green',
+        hibiscusResultKn: 'ಹಸಿರು ಬಣ್ಣ',
+        litmusPaperRed: 'Turns Blue / ನೀಲಿಯಾಗುತ್ತದೆ',
+        litmusPaperBlue: 'Stays Blue / ನೀಲಿಯಾಗಿಯೇ ಉಳಿಯುತ್ತದೆ',
+        litmusSolutionHex: '#2563eb',
+        litmusSolutionResultEn: 'Blue / ನೀಲಿ',
+        litmusSolutionResultKn: 'ನೀಲಿ ಬಣ್ಣ'
+      }
+    ];
+
+    let isExpandedRoster = false;
+    let activeSubstances = ALL_SUBSTANCES.slice(0, 8);
+
+    const testState = {};
+    function resetTestState() {
+      ALL_SUBSTANCES.forEach(s => {
+        testState[s.id] = {
+          hibiscusTested: false,
+          hibiscusMix: 0,
+          litmusPaperRedTested: false,
+          litmusPaperBlueTested: false,
+          litmusSolutionTested: false,
+          litmusSolutionMix: 0
+        };
+      });
+    }
+    resetTestState();
+
+    /* =========================================================================
+       THREE.JS SCENE SETUP
+       ========================================================================= */
+    const canvas = document.getElementById('webgl-canvas');
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    const labelRenderer = new CSS2DRenderer({
+      element: document.getElementById('css2d-container')
+    });
+    labelRenderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#06090e');
+    scene.fog = new THREE.FogExp2('#06090e', 0.026);
+
+    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+    const cameraTargets = {
+      hibiscus: { pos: new THREE.Vector3(-4.2, 4.4, 7.8), lookAt: new THREE.Vector3(-3.8, 1.1, 0.4) },
+      litmus: { pos: new THREE.Vector3(4.2, 4.4, 7.8), lookAt: new THREE.Vector3(3.8, 1.1, 0.4) },
+      compare: { pos: new THREE.Vector3(0, 6.2, 11.0), lookAt: new THREE.Vector3(0, 1.0, 0.2) }
+    };
+    
+    let currentTab = 'hibiscus';
+    camera.position.copy(cameraTargets.hibiscus.pos);
+
+    // Instantiate Standalone OrbitControls
+    const controls = new StandaloneOrbitControls(camera, canvas);
+    controls.target.copy(cameraTargets.hibiscus.lookAt);
+
+    let targetCamPos = cameraTargets.hibiscus.pos.clone();
+    let targetControlsTarget = cameraTargets.hibiscus.lookAt.clone();
+
+    // Lighting (Warm, Well-Lit Laboratory)
+    const ambientLight = new THREE.AmbientLight('#ffffff', 1.1);
+    scene.add(ambientLight);
+
+    const hemiLight = new THREE.HemisphereLight('#f8fafc', '#1e293b', 0.85);
+    scene.add(hemiLight);
+
+    const dirLight = new THREE.DirectionalLight('#ffffff', 1.4);
+    dirLight.position.set(0, 10, 6);
+    dirLight.castShadow = true;
+    scene.add(dirLight);
+
+    const warmFillA = new THREE.PointLight('#f43f5e', 2.2, 10);
+    warmFillA.position.set(-5, 2.8, 2);
+    scene.add(warmFillA);
+
+    const blueFillB = new THREE.PointLight('#6366f1', 2.2, 10);
+    blueFillB.position.set(5, 2.8, 2);
+    scene.add(blueFillB);
+
+    /* =========================================================================
+       CUSTOM GLSL SHADERS (Liquid Color Shifts & Paper Capillary Diffusion)
+       ========================================================================= */
+    const liquidVertexShader = `
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vPosition;
+      varying vec3 vWorldPosition;
+      uniform float uTime;
+      uniform float uRipple;
+
+      void main() {
+        vUv = uv;
+        vNormal = normalize(normalMatrix * normal);
+        vec3 pos = position;
+
+        if (pos.y > 0.4) {
+          float dist = distance(vUv, vec2(0.5, 0.5));
+          float wave = sin(dist * 26.0 - uTime * 14.0) * exp(-dist * 4.5) * uRipple * 0.08;
+          pos.y += wave;
+        }
+
+        vPosition = pos;
+        vec4 worldPos = modelMatrix * vec4(pos, 1.0);
+        vWorldPosition = worldPos.xyz;
+        gl_Position = projectionMatrix * viewMatrix * worldPos;
+      }
+    `;
+
+    const liquidFragmentShader = `
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vPosition;
+      varying vec3 vWorldPosition;
+      uniform vec3 uBaseColor;
+      uniform vec3 uTargetColor;
+      uniform float uColorMix;
+      uniform float uOpacity;
+
+      void main() {
+        vec3 col = mix(uBaseColor, uTargetColor, clamp(uColorMix, 0.0, 1.0));
+        vec3 viewDir = normalize(cameraPosition - vWorldPosition);
+        float fresnel = pow(1.0 - max(dot(viewDir, vNormal), 0.0), 2.0);
+        col += fresnel * 0.25 * vec3(1.0);
+        float verticalGradient = smoothstep(-0.6, 0.6, vPosition.y);
+        col = mix(col * 0.85, col, verticalGradient * 0.4 + 0.6);
+        gl_FragColor = vec4(col, uOpacity);
+      }
+    `;
+
+    function createLiquidShaderMaterial(initialColorHex, targetColorHex) {
+      return new THREE.ShaderMaterial({
+        vertexShader: liquidVertexShader,
+        fragmentShader: liquidFragmentShader,
+        uniforms: {
+          uTime: { value: 0 },
+          uRipple: { value: 0 },
+          uBaseColor: { value: new THREE.Color(initialColorHex) },
+          uTargetColor: { value: new THREE.Color(targetColorHex) },
+          uColorMix: { value: 0.0 },
+          uOpacity: { value: 0.88 }
+        },
+        transparent: true,
+        side: THREE.DoubleSide
+      });
+    }
+
+    const paperVertexShader = `
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vWorldPosition;
+
+      void main() {
+        vUv = uv;
+        vNormal = normalize(normalMatrix * normal);
+        vec4 worldPos = modelMatrix * vec4(position, 1.0);
+        vWorldPosition = worldPos.xyz;
+        gl_Position = projectionMatrix * viewMatrix * worldPos;
+      }
+    `;
+
+    const paperFragmentShader = `
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vWorldPosition;
+      uniform vec3 uFromColor;
+      uniform vec3 uToColor;
+      uniform float uProgress;
+      uniform float uFiberNoise;
+
+      float rand(vec2 co){
+        return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+      }
+
+      void main() {
+        float grain = (rand(vUv * 120.0) - 0.5) * 0.08;
+        float wetFront = clamp(uProgress * 0.65, 0.0, 0.65);
+        float edgeSoftness = 0.06;
+        float wetMask = smoothstep(wetFront + edgeSoftness, wetFront - edgeSoftness, vUv.y);
+        float edgeHighlight = smoothstep(0.05, 0.0, abs(vUv.y - wetFront)) * step(0.02, uProgress) * 0.22;
+
+        vec3 base = uFromColor + vec3(grain);
+        vec3 wetTarget = uToColor + vec3(grain);
+        vec3 finalColor = mix(base, wetTarget, wetMask);
+        finalColor -= edgeHighlight;
+
+        gl_FragColor = vec4(finalColor, 1.0);
+      }
+    `;
+
+    function createPaperShaderMaterial(fromColorHex, toColorHex) {
+      return new THREE.ShaderMaterial({
+        vertexShader: paperVertexShader,
+        fragmentShader: paperFragmentShader,
+        uniforms: {
+          uFromColor: { value: new THREE.Color(fromColorHex) },
+          uToColor: { value: new THREE.Color(toColorHex) },
+          uProgress: { value: 0.0 },
+          uFiberNoise: { value: 0.1 }
+        },
+        side: THREE.DoubleSide
+      });
+    }
+
+    /* =========================================================================
+       PROCEDURAL 3D LAB SCENE SETUP
+       ========================================================================= */
+    const labBenchGroup = new THREE.Group();
+
+    // Lab Bench Tabletop
+    const benchGeo = new THREE.BoxGeometry(19.0, 0.35, 6.6);
+    const benchMat = new THREE.MeshStandardMaterial({
+      color: '#1a2234',
+      roughness: 0.28,
+      metalness: 0.18
+    });
+    const benchTop = new THREE.Mesh(benchGeo, benchMat);
+    benchTop.position.y = -0.18;
+    benchTop.receiveShadow = true;
+    labBenchGroup.add(benchTop);
+
+    // Bench Grid Inlay
+    const gridHelper = new THREE.GridHelper(18, 36, '#334155', '#1e293b');
+    gridHelper.position.y = 0.005;
+    labBenchGroup.add(gridHelper);
+
+    // Laboratory Backdrop Wall
+    const wallGeo = new THREE.PlaneGeometry(28, 14);
+    const wallMat = new THREE.MeshStandardMaterial({
+      color: '#070b12',
+      roughness: 0.85
+    });
+    const wall = new THREE.Mesh(wallGeo, wallMat);
+    wall.position.set(0, 5.5, -4.2);
+    scene.add(wall);
+
+    // Subtle Glowing Divider Line between Station A and Station B
+    const dividerGeo = new THREE.BoxGeometry(0.06, 0.015, 6.2);
+    const dividerMat = new THREE.MeshBasicMaterial({
+      color: '#6366f1',
+      transparent: true,
+      opacity: 0.7
+    });
+    const dividerLine = new THREE.Mesh(dividerGeo, dividerMat);
+    dividerLine.position.set(0, 0.01, 0);
+    labBenchGroup.add(dividerLine);
+
+    // Divider CSS2D Sign
+    const dividerDiv = document.createElement('div');
+    dividerDiv.className = 'label-3d';
+    dividerDiv.innerHTML = `
+      <div class="label-title">Choose Indicator / ಸೂಚಕವನ್ನು ಆರಿಸಿ</div>
+      <div class="label-sub">🌺 Hibiscus (Left) | 📜 Litmus (Right)</div>
+    `;
+    const dividerLabel = new CSS2DObject(dividerDiv);
+    dividerLabel.position.set(0, 0.6, -2.6);
+    scene.add(dividerLabel);
+
+    scene.add(labBenchGroup);
+
+    // Common Materials
+    const glassMaterial = new THREE.MeshPhysicalMaterial({
+      color: '#ffffff',
+      transmission: 0.94,
+      opacity: 1.0,
+      transparent: true,
+      roughness: 0.06,
+      ior: 1.52,
+      thickness: 0.12,
+      specularIntensity: 1.0
+    });
+
+    const woodMaterial = new THREE.MeshStandardMaterial({
+      color: '#78350f',
+      roughness: 0.55,
+      metalness: 0.05
+    });
+
+    /* =========================================================================
+       STATION A: HIBISCUS INDICATOR (Left Half)
+       ========================================================================= */
+    const stationAGroup = new THREE.Group();
+
+    // 1. Fresh Hibiscus Flower on Ceramic Saucer (For Picking Petals)
+    const flowerGroup = new THREE.Group();
+    flowerGroup.position.set(-7.0, 0, 0.4);
+
+    const saucerPoints = [
+      new THREE.Vector2(0, 0),
+      new THREE.Vector2(0.95, 0),
+      new THREE.Vector2(1.2, 0.1),
+      new THREE.Vector2(1.3, 0.22),
+      new THREE.Vector2(1.2, 0.22),
+      new THREE.Vector2(1.0, 0.08),
+      new THREE.Vector2(0, 0.05)
+    ];
+    const saucerGeo = new THREE.LatheGeometry(saucerPoints, 32);
+    const saucerMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.3 });
+    const saucerMesh = new THREE.Mesh(saucerGeo, saucerMat);
+    saucerMesh.receiveShadow = true;
+    flowerGroup.add(saucerMesh);
+
+    const leafMat = new THREE.MeshStandardMaterial({ color: '#15803d', roughness: 0.5, side: THREE.DoubleSide });
+    for (let l = 0; l < 4; l++) {
+      const leafGeo = new THREE.ConeGeometry(0.2, 0.8, 4);
+      const leafMesh = new THREE.Mesh(leafGeo, leafMat);
+      leafMesh.rotation.z = Math.PI / 2;
+      leafMesh.rotation.y = (l / 4) * Math.PI * 2;
+      leafMesh.position.set(0, 0.14, 0);
+      flowerGroup.add(leafMesh);
+    }
+
+    const stamenGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.75, 12);
+    const stamenMat = new THREE.MeshStandardMaterial({ color: '#e11d48', roughness: 0.3 });
+    const stamen = new THREE.Mesh(stamenGeo, stamenMat);
+    stamen.position.set(0, 0.42, 0);
+    flowerGroup.add(stamen);
+
+    const antherMat = new THREE.MeshStandardMaterial({ color: '#fbbf24', roughness: 0.2 });
+    for (let a = 0; a < 8; a++) {
+      const anther = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 8), antherMat);
+      const angle = (a / 8) * Math.PI * 2;
+      anther.position.set(Math.cos(angle) * 0.08, 0.65 + (a % 3) * 0.04, Math.sin(angle) * 0.08);
+      flowerGroup.add(anther);
+    }
+
+    // 4 Pluckable Hibiscus Petals
+    const pluckablePetals = [];
+    const petalShape = new THREE.Shape();
+    petalShape.moveTo(0, 0);
+    petalShape.quadraticCurveTo(0.35, 0.4, 0.2, 0.85);
+    petalShape.quadraticCurveTo(0, 1.05, -0.2, 0.85);
+    petalShape.quadraticCurveTo(-0.35, 0.4, 0, 0);
+    const flowerPetalGeo = new THREE.ShapeGeometry(petalShape, 12);
+    const flowerPetalMat = new THREE.MeshStandardMaterial({
+      color: '#e11d48',
+      roughness: 0.4,
+      side: THREE.DoubleSide
+    });
+
+    for (let i = 0; i < 4; i++) {
+      const petalMesh = new THREE.Mesh(flowerPetalGeo, flowerPetalMat.clone());
+      const angle = (i / 4) * Math.PI * 2;
+      petalMesh.rotation.set(-0.55, 0, angle + Math.PI / 2);
+      petalMesh.position.set(Math.cos(angle) * 0.12, 0.22, Math.sin(angle) * 0.12);
+      petalMesh.scale.setScalar(0.9);
+      petalMesh.userData = { isPetal: true, petalIndex: i, plucked: false };
+      flowerGroup.add(petalMesh);
+      pluckablePetals.push(petalMesh);
+    }
+
+    const flowerDiv = document.createElement('div');
+    flowerDiv.className = 'label-3d';
+    flowerDiv.innerHTML = `
+      <div class="label-title">🌺 Fresh Hibiscus Flower</div>
+      <div class="label-sub">ದಾಸವಾಳದ ಹೂವು (Click to pluck)</div>
+    `;
+    const flowerLabel = new CSS2DObject(flowerDiv);
+    flowerLabel.position.set(0, 1.1, 0);
+    flowerGroup.add(flowerLabel);
+
+    stationAGroup.add(flowerGroup);
+
+    // 2. Porcelain Mortar & Pestle
+    const mortarGroup = new THREE.Group();
+    mortarGroup.position.set(-4.5, 0, 0.4);
+
+    const mortarPoints = [
+      new THREE.Vector2(0.65, 0),
+      new THREE.Vector2(1.2, 0.05),
+      new THREE.Vector2(1.45, 0.4),
+      new THREE.Vector2(1.5, 0.95),
+      new THREE.Vector2(1.35, 1.0),
+      new THREE.Vector2(1.2, 0.95),
+      new THREE.Vector2(1.05, 0.45),
+      new THREE.Vector2(0.4, 0.25),
+      new THREE.Vector2(0.0, 0.22)
+    ];
+    const mortarGeo = new THREE.LatheGeometry(mortarPoints, 48);
+    const mortarMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.35 });
+    const mortarMesh = new THREE.Mesh(mortarGeo, mortarMat);
+    mortarMesh.castShadow = true;
+    mortarMesh.receiveShadow = true;
+    mortarMesh.userData = { isMortar: true };
+    mortarGroup.add(mortarMesh);
+
+    // Pestle
+    const pestleGroup = new THREE.Group();
+    const pestlePoints = [
+      new THREE.Vector2(0, 0),
+      new THREE.Vector2(0.32, 0.12),
+      new THREE.Vector2(0.35, 0.35),
+      new THREE.Vector2(0.24, 0.7),
+      new THREE.Vector2(0.18, 1.4),
+      new THREE.Vector2(0.22, 1.7),
+      new THREE.Vector2(0.18, 1.85),
+      new THREE.Vector2(0, 1.9)
+    ];
+    const pestleGeo = new THREE.LatheGeometry(pestlePoints, 32);
+    const pestleMesh = new THREE.Mesh(pestleGeo, mortarMat);
+    pestleMesh.castShadow = true;
+    pestleMesh.userData = { isPestle: true };
+    pestleGroup.add(pestleMesh);
+    pestleGroup.position.set(-4.3, 0.35, 0.5);
+    pestleGroup.rotation.set(-0.25, 0, 0.35);
+    scene.add(pestleGroup);
+
+    // Crushed Petals inside Mortar
+    const mortarPetalsGroup = new THREE.Group();
+    const mortarPetalMeshes = [];
+    for (let m = 0; m < 10; m++) {
+      const pMesh = new THREE.Mesh(flowerPetalGeo, new THREE.MeshStandardMaterial({ color: '#e11d48', roughness: 0.5, side: THREE.DoubleSide }));
+      const a = (m / 10) * Math.PI * 2;
+      const r = 0.1 + Math.random() * 0.4;
+      pMesh.position.set(Math.cos(a) * r, 0.26, Math.sin(a) * r);
+      pMesh.rotation.set(-Math.PI / 2, 0, a);
+      pMesh.scale.setScalar(0.45);
+      pMesh.visible = false;
+      mortarPetalsGroup.add(pMesh);
+      mortarPetalMeshes.push(pMesh);
+    }
+    mortarGroup.add(mortarPetalsGroup);
+
+    // Liquid inside Mortar
+    const mortarLiquidGeo = new THREE.CylinderGeometry(0.95, 0.7, 0.35, 32);
+    const mortarLiquidMat = createLiquidShaderMaterial('#f43f5e', '#6b0520');
+    mortarLiquidMat.uniforms.uOpacity.value = 0.0;
+    const mortarLiquidMesh = new THREE.Mesh(mortarLiquidGeo, mortarLiquidMat);
+    mortarLiquidMesh.position.set(0, 0.42, 0);
+    mortarGroup.add(mortarLiquidMesh);
+
+    const mortarDiv = document.createElement('div');
+    mortarDiv.className = 'label-3d';
+    mortarDiv.innerHTML = `
+      <div class="label-title">🥣 Mortar &amp; Pestle</div>
+      <div class="label-sub">ಖರಲ್ ಮತ್ತು ಒರಳು</div>
+    `;
+    const mortarLabel = new CSS2DObject(mortarDiv);
+    mortarLabel.position.set(0, 1.8, 0);
+    mortarGroup.add(mortarLabel);
+
+    stationAGroup.add(mortarGroup);
+
+    // 3. Warm Water Beaker + Steam
+    const beakerGroup = new THREE.Group();
+    beakerGroup.position.set(-4.5, 0, -1.6);
+
+    const beakerPoints = [
+      new THREE.Vector2(0, 0),
+      new THREE.Vector2(0.85, 0),
+      new THREE.Vector2(0.9, 0.08),
+      new THREE.Vector2(0.9, 1.8),
+      new THREE.Vector2(0.96, 1.85),
+      new THREE.Vector2(0.92, 1.85),
+      new THREE.Vector2(0.86, 1.8),
+      new THREE.Vector2(0.86, 0.1),
+      new THREE.Vector2(0, 0.1)
+    ];
+    const beakerGeo = new THREE.LatheGeometry(beakerPoints, 40);
+    const beakerMesh = new THREE.Mesh(beakerGeo, glassMaterial);
+    beakerMesh.castShadow = true;
+    beakerMesh.userData = { isBeaker: true };
+    beakerGroup.add(beakerMesh);
+
+    const beakerWaterGeo = new THREE.CylinderGeometry(0.84, 0.84, 1.3, 32);
+    const beakerWaterMat = new THREE.MeshStandardMaterial({
+      color: '#e0f2fe',
+      transparent: true,
+      opacity: 0.65,
+      roughness: 0.1
+    });
+    const beakerWater = new THREE.Mesh(beakerWaterGeo, beakerWaterMat);
+    beakerWater.position.y = 0.75;
+    beakerGroup.add(beakerWater);
+
+    // Steam particles
+    const steamParticleCount = 40;
+    const steamPositions = new Float32Array(steamParticleCount * 3);
+    for (let s = 0; s < steamParticleCount; s++) {
+      steamPositions[s * 3] = (Math.random() - 0.5) * 0.8;
+      steamPositions[s * 3 + 1] = 1.3 + Math.random() * 1.4;
+      steamPositions[s * 3 + 2] = (Math.random() - 0.5) * 0.8;
+    }
+    const steamGeo = new THREE.BufferGeometry();
+    steamGeo.setAttribute('position', new THREE.BufferAttribute(steamPositions, 3));
+    const steamMat = new THREE.PointsMaterial({
+      color: '#f8fafc',
+      size: 0.14,
+      transparent: true,
+      opacity: 0.35,
+      depthWrite: false
+    });
+    const steamParticles = new THREE.Points(steamGeo, steamMat);
+    beakerGroup.add(steamParticles);
+
+    const beakerDiv = document.createElement('div');
+    beakerDiv.className = 'label-3d';
+    beakerDiv.innerHTML = `
+      <div class="label-title">♨️ Warm Water (60°C)</div>
+      <div class="label-sub">ಬೆಚ್ಚಗಿನ ನೀರು</div>
+    `;
+    const beakerLabel = new CSS2DObject(beakerDiv);
+    beakerLabel.position.set(0, 2.3, 0);
+    beakerGroup.add(beakerLabel);
+
+    stationAGroup.add(beakerGroup);
+
+    // 4. Funnel Stand + Filter Paper + Hibiscus Dropper Bottle
+    const filterUnitGroup = new THREE.Group();
+    filterUnitGroup.position.set(-2.0, 0, -0.6);
+
+    const standMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.35, metalness: 0.7 });
+    const standBase = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.1, 1.6), standMat);
+    standBase.position.y = 0.05;
+    filterUnitGroup.add(standBase);
+
+    const standRod = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 3.6, 16), standMat);
+    standRod.position.set(0.6, 1.8, -0.55);
+    filterUnitGroup.add(standRod);
+
+    const clampRing = new THREE.Mesh(new THREE.TorusGeometry(0.52, 0.03, 12, 32), standMat);
+    clampRing.rotation.x = Math.PI / 2;
+    clampRing.position.set(0, 2.05, 0);
+    filterUnitGroup.add(clampRing);
+
+    const funnelPoints = [
+      new THREE.Vector2(0.5, 2.6),
+      new THREE.Vector2(0.12, 1.8),
+      new THREE.Vector2(0.09, 1.1),
+      new THREE.Vector2(0.06, 1.1),
+      new THREE.Vector2(0.09, 1.8),
+      new THREE.Vector2(0.46, 2.6)
+    ];
+    const funnelGeo = new THREE.LatheGeometry(funnelPoints, 32);
+    const funnelMesh = new THREE.Mesh(funnelGeo, glassMaterial);
+    funnelMesh.userData = { isFunnel: true };
+    filterUnitGroup.add(funnelMesh);
+
+    const paperConeGeo = new THREE.ConeGeometry(0.46, 0.7, 24, 1, true);
+    const paperConeMat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.8, side: THREE.DoubleSide });
+    const paperConeMesh = new THREE.Mesh(paperConeGeo, paperConeMat);
+    paperConeMesh.position.set(0, 2.2, 0);
+    filterUnitGroup.add(paperConeMesh);
+
+    // Dropper Bottle
+    const hibiscusBottleGroup = new THREE.Group();
+    hibiscusBottleGroup.position.set(0, 0, 0);
+
+    const bottleBodyGeo = new THREE.CylinderGeometry(0.44, 0.44, 1.0, 32);
+    const bottleMesh = new THREE.Mesh(bottleBodyGeo, glassMaterial);
+    bottleMesh.position.y = 0.55;
+    hibiscusBottleGroup.add(bottleMesh);
+
+    const rubberCapMat = new THREE.MeshStandardMaterial({ color: '#be123c', roughness: 0.6 });
+    const rubberCap = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), rubberCapMat);
+    rubberCap.position.y = 1.25;
+    hibiscusBottleGroup.add(rubberCap);
+
+    const pipette = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.1, 16), glassMaterial);
+    pipette.position.y = 0.7;
+    hibiscusBottleGroup.add(pipette);
+
+    const bottleLiquidGeo = new THREE.CylinderGeometry(0.41, 0.41, 0.78, 32);
+    const bottleLiquidMat = createLiquidShaderMaterial('#881337', '#9f1239');
+    bottleLiquidMat.uniforms.uOpacity.value = 0.0;
+    const bottleLiquidMesh = new THREE.Mesh(bottleLiquidGeo, bottleLiquidMat);
+    bottleLiquidMesh.position.y = 0.48;
+    hibiscusBottleGroup.add(bottleLiquidMesh);
+
+    hibiscusBottleGroup.userData = { isHibiscusDropper: true };
+    filterUnitGroup.add(hibiscusBottleGroup);
+
+    const bottleDiv = document.createElement('div');
+    bottleDiv.className = 'label-3d';
+    bottleDiv.innerHTML = `
+      <div class="label-title">🌺 Hibiscus Indicator</div>
+      <div class="label-sub">ದಾಸವಾಳ ಸಾರ (ಗಾಢ ಕೆಂಪು)</div>
+    `;
+    const bottleLabel = new CSS2DObject(bottleDiv);
+    bottleLabel.position.set(0, 1.8, 0);
+    hibiscusBottleGroup.add(bottleLabel);
+
+    stationAGroup.add(filterUnitGroup);
+
+    // 5. Test Tube Rack A
+    const rackAGroup = new THREE.Group();
+    rackAGroup.position.set(-4.5, 0, 1.8);
+
+    const rackABase = new THREE.Mesh(new THREE.BoxGeometry(7.2, 0.2, 1.2), woodMaterial);
+    rackABase.position.y = 0.1;
+    rackABase.receiveShadow = true;
+    rackAGroup.add(rackABase);
+
+    const rackATopTier = new THREE.Mesh(new THREE.BoxGeometry(7.2, 0.16, 1.2), woodMaterial);
+    rackATopTier.position.y = 1.5;
+    rackAGroup.add(rackATopTier);
+
+    const rackASideL = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.5, 1.2), woodMaterial);
+    rackASideL.position.set(-3.5, 0.75, 0);
+    const rackASideR = rackASideL.clone();
+    rackASideR.position.x = 3.5;
+    rackAGroup.add(rackASideL);
+    rackAGroup.add(rackASideR);
+
+    const testTubesA = [];
+
+    stationAGroup.add(rackAGroup);
+    scene.add(stationAGroup);
+
+    /* =========================================================================
+       STATION B: LITMUS INDICATOR (Right Half)
+       ========================================================================= */
+    const stationBGroup = new THREE.Group();
+
+    // 1. Dried Lichen Powder Dish + Pestle
+    const lichenDishGroup = new THREE.Group();
+    lichenDishGroup.position.set(2.2, 0, -1.6);
+
+    const lichenDishPoints = [
+      new THREE.Vector2(0, 0),
+      new THREE.Vector2(0.9, 0),
+      new THREE.Vector2(1.15, 0.15),
+      new THREE.Vector2(1.2, 0.4),
+      new THREE.Vector2(1.1, 0.4),
+      new THREE.Vector2(0.95, 0.15),
+      new THREE.Vector2(0, 0.1)
+    ];
+    const lichenDishGeo = new THREE.LatheGeometry(lichenDishPoints, 32);
+    const dishMat = new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.6 });
+    const lichenDish = new THREE.Mesh(lichenDishGeo, dishMat);
+    lichenDish.userData = { isLichenDish: true };
+    lichenDishGroup.add(lichenDish);
+
+    const lichenPowderGeo = new THREE.CylinderGeometry(0.88, 0.88, 0.15, 32);
+    const lichenPowderMat = new THREE.MeshStandardMaterial({ color: '#581c87', roughness: 0.9 });
+    const lichenPowder = new THREE.Mesh(lichenPowderGeo, lichenPowderMat);
+    lichenPowder.position.y = 0.18;
+    lichenDishGroup.add(lichenPowder);
+
+    const lichenPestle = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.18, 1.2, 16), mortarMat);
+    lichenPestle.rotation.set(-0.35, 0, 0.45);
+    lichenPestle.position.set(0.3, 0.4, 0.2);
+    lichenDishGroup.add(lichenPestle);
+
+    const lichenDiv = document.createElement('div');
+    lichenDiv.className = 'label-3d';
+    lichenDiv.innerHTML = `
+      <div class="label-title">🧫 Lichen Powder</div>
+      <div class="label-sub">ಲೈಕನ್ ಪುಡಿ (Roccella)</div>
+    `;
+    const lichenLabel = new CSS2DObject(lichenDiv);
+    lichenLabel.position.set(0, 1.6, 0);
+    lichenDishGroup.add(lichenLabel);
+
+    stationBGroup.add(lichenDishGroup);
+
+    // 2. Amber Litmus Solution Bottle
+    const litmusLiquidGroup = new THREE.Group();
+    litmusLiquidGroup.position.set(2.2, 0, -0.4);
+
+    const amberGlassMat = new THREE.MeshPhysicalMaterial({
+      color: '#78350f',
+      transmission: 0.75,
+      opacity: 1.0,
+      transparent: true,
+      roughness: 0.1,
+      ior: 1.54
+    });
+    const litmusBottleMesh = new THREE.Mesh(bottleBodyGeo, amberGlassMat);
+    litmusBottleMesh.position.y = 0.55;
+    litmusLiquidGroup.add(litmusBottleMesh);
+
+    const litmusCap = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), new THREE.MeshStandardMaterial({ color: '#312e81', roughness: 0.6 }));
+    litmusCap.position.y = 1.25;
+    litmusLiquidGroup.add(litmusCap);
+
+    const litmusPipette = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.1, 16), glassMaterial);
+    litmusPipette.position.y = 0.7;
+    litmusLiquidGroup.add(litmusPipette);
+
+    const litmusBottleLiquidMat = createLiquidShaderMaterial('#6d28d9', '#5b21b6');
+    litmusBottleLiquidMat.uniforms.uOpacity.value = 0.0;
+    const litmusBottleLiquidMesh = new THREE.Mesh(bottleLiquidGeo, litmusBottleLiquidMat);
+    litmusBottleLiquidMesh.position.y = 0.48;
+    litmusLiquidGroup.add(litmusBottleLiquidMesh);
+
+    litmusLiquidGroup.userData = { isLitmusDropper: true };
+
+    const litmusSolDiv = document.createElement('div');
+    litmusSolDiv.className = 'label-3d';
+    litmusSolDiv.innerHTML = `
+      <div class="label-title">📜 Litmus Solution</div>
+      <div class="label-sub">ಲಿಟ್ಮಸ್ ದ್ರಾವಣ (ನೇರಳೆ)</div>
+    `;
+    const litmusSolLabel = new CSS2DObject(litmusSolDiv);
+    litmusSolLabel.position.set(0, 1.8, 0);
+    litmusLiquidGroup.add(litmusSolLabel);
+
+    stationBGroup.add(litmusLiquidGroup);
+
+    // 3. Ceramic Litmus Testing Pad
+    const padGroup = new THREE.Group();
+    padGroup.position.set(4.5, 0, -0.6);
+
+    const tileGeo = new THREE.BoxGeometry(2.4, 0.1, 1.8);
+    const tileMat = new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.15 });
+    const tileMesh = new THREE.Mesh(tileGeo, tileMat);
+    tileMesh.position.y = 0.05;
+    tileMesh.receiveShadow = true;
+    padGroup.add(tileMesh);
+
+    const redLitmusStack = new THREE.Mesh(
+      new THREE.BoxGeometry(0.45, 0.08, 1.1),
+      new THREE.MeshStandardMaterial({ color: '#ef4444', roughness: 0.7 })
+    );
+    redLitmusStack.position.set(-0.6, 0.12, 0);
+    redLitmusStack.userData = { isRedLitmusStack: true };
+    padGroup.add(redLitmusStack);
+
+    const blueLitmusStack = new THREE.Mesh(
+      new THREE.BoxGeometry(0.45, 0.08, 1.1),
+      new THREE.MeshStandardMaterial({ color: '#2563eb', roughness: 0.7 })
+    );
+    blueLitmusStack.position.set(0.6, 0.12, 0);
+    blueLitmusStack.userData = { isBlueLitmusStack: true };
+    padGroup.add(blueLitmusStack);
+
+    const padDiv = document.createElement('div');
+    padDiv.className = 'label-3d';
+    padDiv.innerHTML = `
+      <div class="label-title">📑 Litmus Paper Strips</div>
+      <div class="label-sub">ಕೆಂಪು &amp; ನೀಲಿ ಲಿಟ್ಮಸ್ ಪಟ್ಟಿಗಳು (Click to dip)</div>
+    `;
+    const padLabel = new CSS2DObject(padDiv);
+    padLabel.position.set(0, 1.4, 0);
+    padGroup.add(padLabel);
+
+    stationBGroup.add(padGroup);
+
+    // 4. Wooden Results Pinboard
+    const pinboardGroup = new THREE.Group();
+    pinboardGroup.position.set(7.5, 0, -1.6);
+
+    const boardFrame = new THREE.Mesh(new THREE.BoxGeometry(2.6, 2.0, 0.1), woodMaterial);
+    boardFrame.position.y = 1.4;
+    pinboardGroup.add(boardFrame);
+
+    const corkMat = new THREE.MeshStandardMaterial({ color: '#b45309', roughness: 0.85 });
+    const corkFace = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.8, 0.04), corkMat);
+    corkFace.position.set(0, 1.4, 0.04);
+    pinboardGroup.add(corkFace);
+
+    const pinboardDiv = document.createElement('div');
+    pinboardDiv.className = 'label-3d';
+    pinboardDiv.innerHTML = `
+      <div class="label-title">📌 Paper Results Board</div>
+      <div class="label-sub">ಲಿಟ್ಮಸ್ ಕಾಗದ ಪರೀಕ್ಷಾ ಫಲಕ</div>
+    `;
+    const pinboardLabel = new CSS2DObject(pinboardDiv);
+    pinboardLabel.position.set(0, 2.7, 0);
+    pinboardGroup.add(pinboardLabel);
+
+    stationBGroup.add(pinboardGroup);
+
+    const pinnedStrips = [];
+
+    // 5. Test Tube Rack B
+    const rackBGroup = new THREE.Group();
+    rackBGroup.position.set(4.5, 0, 1.8);
+
+    const rackBBase = new THREE.Mesh(new THREE.BoxGeometry(7.2, 0.2, 1.2), woodMaterial);
+    rackBBase.position.y = 0.1;
+    rackBBase.receiveShadow = true;
+    rackBGroup.add(rackBBase);
+
+    const rackBTopTier = new THREE.Mesh(new THREE.BoxGeometry(7.2, 0.16, 1.2), woodMaterial);
+    rackBTopTier.position.y = 1.5;
+    rackBGroup.add(rackBTopTier);
+
+    const rackBSideL = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.5, 1.2), woodMaterial);
+    rackBSideL.position.set(-3.5, 0.75, 0);
+    const rackBSideR = rackBSideL.clone();
+    rackBSideR.position.x = 3.5;
+    rackBGroup.add(rackBSideL);
+    rackBGroup.add(rackBSideR);
+
+    const testTubesB = [];
+
+    stationBGroup.add(rackBGroup);
+    scene.add(stationBGroup);
+
+    /* =========================================================================
+       DYNAMIC TEST TUBE GENERATOR FOR BOTH RACKS
+       ========================================================================= */
+    function buildTestTubes() {
+      testTubesA.forEach(t => {
+        rackAGroup.remove(t.container);
+        if (t.labelObj && t.labelObj.element && t.labelObj.element.parentNode) {
+          t.labelObj.element.parentNode.removeChild(t.labelObj.element);
+        }
+      });
+      testTubesB.forEach(t => {
+        rackBGroup.remove(t.container);
+        if (t.labelObj && t.labelObj.element && t.labelObj.element.parentNode) {
+          t.labelObj.element.parentNode.removeChild(t.labelObj.element);
+        }
+      });
+      testTubesA.length = 0;
+      testTubesB.length = 0;
+
+      const count = activeSubstances.length;
+      const rackWidth = 6.4;
+      const spacing = count > 1 ? rackWidth / (count - 1) : 0;
+      const startX = -rackWidth / 2;
+
+      activeSubstances.forEach((substance, idx) => {
+        const posX = startX + idx * spacing;
+        const tubeHeight = 1.85;
+        const tubeRadius = 0.2;
+        const tubePoints = [
+          new THREE.Vector2(0, 0),
+          new THREE.Vector2(tubeRadius * 0.9, 0.05),
+          new THREE.Vector2(tubeRadius, 0.2),
+          new THREE.Vector2(tubeRadius, tubeHeight),
+          new THREE.Vector2(tubeRadius * 1.15, tubeHeight + 0.04),
+          new THREE.Vector2(tubeRadius * 0.95, tubeHeight + 0.04),
+          new THREE.Vector2(tubeRadius * 0.85, 0.2),
+          new THREE.Vector2(0, 0.05)
+        ];
+        const tubeGeo = new THREE.LatheGeometry(tubePoints, 24);
+
+        // --- RACK A TUBE ---
+        const containerA = new THREE.Group();
+        containerA.position.set(posX, 0.2, 0);
+
+        const meshA = new THREE.Mesh(tubeGeo, glassMaterial);
+        meshA.castShadow = true;
+        meshA.userData = { isTubeA: true, substanceId: substance.id, index: idx };
+        containerA.add(meshA);
+
+        const liquidMatA = createLiquidShaderMaterial(substance.initialColorHex, substance.hibiscusColorHex);
+        const liquidGeoA = new THREE.CylinderGeometry(tubeRadius * 0.82, tubeRadius * 0.82, 1.05, 20);
+        const liquidMeshA = new THREE.Mesh(liquidGeoA, liquidMatA);
+        liquidMeshA.position.y = 0.62;
+        containerA.add(liquidMeshA);
+
+        const labelDivA = document.createElement('div');
+        labelDivA.className = 'label-3d';
+        labelDivA.innerHTML = `
+          <div class="label-title">
+            <span class="swatch-indicator" style="background: ${substance.initialColorHex};"></span>
+            ${substance.nameEn}
+          </div>
+          <div class="label-sub">${substance.nameKn} • ${substance.typeEn}</div>
+        `;
+        const labelObjA = new CSS2DObject(labelDivA);
+        labelObjA.position.set(0, 2.3, 0);
+        containerA.add(labelObjA);
+
+        rackAGroup.add(containerA);
+        testTubesA.push({
+          substance,
+          container: containerA,
+          mesh: meshA,
+          liquidMesh: liquidMeshA,
+          liquidMat: liquidMatA,
+          labelDiv: labelDivA,
+          labelObj: labelObjA
+        });
+
+        // --- RACK B TUBE ---
+        const containerB = new THREE.Group();
+        containerB.position.set(posX, 0.2, 0);
+
+        const meshB = new THREE.Mesh(tubeGeo, glassMaterial);
+        meshB.castShadow = true;
+        meshB.userData = { isTubeB: true, substanceId: substance.id, index: idx };
+        containerB.add(meshB);
+
+        const liquidMatB = createLiquidShaderMaterial(substance.initialColorHex, substance.litmusSolutionHex);
+        const liquidGeoB = new THREE.CylinderGeometry(tubeRadius * 0.82, tubeRadius * 0.82, 1.05, 20);
+        const liquidMeshB = new THREE.Mesh(liquidGeoB, liquidMatB);
+        liquidMeshB.position.y = 0.62;
+        containerB.add(liquidMeshB);
+
+        const labelDivB = document.createElement('div');
+        labelDivB.className = 'label-3d';
+        labelDivB.innerHTML = `
+          <div class="label-title">
+            <span class="swatch-indicator" style="background: ${substance.initialColorHex};"></span>
+            ${substance.nameEn}
+          </div>
+          <div class="label-sub">${substance.nameKn} • ${substance.typeEn}</div>
+        `;
+        const labelObjB = new CSS2DObject(labelDivB);
+        labelObjB.position.set(0, 2.3, 0);
+        containerB.add(labelObjB);
+
+        rackBGroup.add(containerB);
+        testTubesB.push({
+          substance,
+          container: containerB,
+          mesh: meshB,
+          liquidMesh: liquidMeshB,
+          liquidMat: liquidMatB,
+          labelDiv: labelDivB,
+          labelObj: labelObjB
+        });
+      });
+    }
+
+    buildTestTubes();
+
+    /* =========================================================================
+       ACTIVE DRAGGING / DIPPING PAPER STRIP (Station B)
+       ========================================================================= */
+    const activeStripGeo = new THREE.PlaneGeometry(0.24, 1.1, 16, 24);
+    let activePaperStrip = null;
+
+    function createDraggableLitmusStrip(paperType = 'red') {
+      const isRed = paperType === 'red';
+      const fromHex = isRed ? '#ef4444' : '#2563eb';
+      const toHex = isRed ? '#2563eb' : '#ef4444';
+      const mat = createPaperShaderMaterial(fromHex, toHex);
+      const mesh = new THREE.Mesh(activeStripGeo, mat);
+      mesh.userData = { paperType, isPaperStrip: true };
+      mesh.visible = false;
+      scene.add(mesh);
+      return mesh;
+    }
+
+    activePaperStrip = createDraggableLitmusStrip('red');
+
+    /* =========================================================================
+       STAGE STATE MACHINE & INTERACTIVE ACTIONS
+       ========================================================================= */
+    const simState = {
+      petalsPlucked: 0,
+      crushCount: 0,
+      waterAdded: false,
+      isFiltered: false,
+      litmusPrepared: false,
+      hibiscusStage: 'A0',
+      litmusStage: 'B1',
+      animating: false
+    };
+
+    function updateGuidanceCard() {
+      const title = document.getElementById('hint-step-title');
+      const msgEn = document.getElementById('hint-msg-en');
+      const msgKn = document.getElementById('hint-msg-kn');
+      const countText = document.getElementById('step-count-text');
+      const counterBadge = document.getElementById('step-counter-badge');
+
+      if (currentTab === 'hibiscus') {
+        if (simState.hibiscusStage === 'A0') {
+          title.textContent = 'STAGE A0: PICK HIBISCUS PETALS';
+          msgEn.textContent = 'Click the blooming hibiscus flower petals to pluck them into the mortar!';
+          msgKn.textContent = 'ದಾಸವಾಳ ಹೂವಿನ ದಳಗಳನ್ನು ಒರಳಿನಲ್ಲಿ ಕೀಳಲು ದಳಗಳ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ!';
+          counterBadge.style.display = 'inline-flex';
+          countText.textContent = `${simState.petalsPlucked} / 4`;
+        } else if (simState.hibiscusStage === 'A1') {
+          title.textContent = 'STAGE A1: CRUSH THE PETALS';
+          msgEn.textContent = 'Click the mortar or pestle 3 times to crush petals into a crimson pulp.';
+          msgKn.textContent = 'ದಳಗಳನ್ನು ಅರೆಯಲು ಒರಳು ಅಥವಾ ಖರಲ್ ಮೇಲೆ 3 ಬಾರಿ ಕ್ಲಿಕ್ ಮಾಡಿ.';
+          counterBadge.style.display = 'inline-flex';
+          countText.textContent = `${simState.crushCount} / 3 Crushes`;
+        } else if (simState.hibiscusStage === 'A2') {
+          title.textContent = 'STAGE A2: ADD WARM WATER';
+          msgEn.textContent = 'Click the warm water beaker to pour 60°C water and extract anthocyanins.';
+          msgKn.textContent = 'ಬೆಚ್ಚಗಿನ ನೀರನ್ನು ಸುರಿಯಲು ಬೀಕರ್ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ (ಆಂಥೋಸಯಾನಿನ್ ಹೊರತೆಗೆಯಲು).';
+          counterBadge.style.display = 'none';
+        } else if (simState.hibiscusStage === 'A3') {
+          title.textContent = 'STAGE A3: FILTER & BOTTLE';
+          msgEn.textContent = 'Click the filter funnel to filter the crimson extract into the dropper bottle.';
+          msgKn.textContent = 'ದಾಸವಾಳದ ರಸವನ್ನು ಡ್ರಾಪರ್ ಬಾಟಲಿಗೆ ಶೋಧಿಸಲು ಆಲಿಕೆಯ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ.';
+          counterBadge.style.display = 'none';
+        } else if (simState.hibiscusStage === 'A4') {
+          title.textContent = 'STAGE A4: TEST SAMPLES';
+          msgEn.textContent = 'Click the Hibiscus dropper bottle or any test tube to test solutions!';
+          msgKn.textContent = 'ಮಾದರಿಗಳನ್ನು ಪರೀಕ್ಷಿಸಲು ಡ್ರಾಪರ್ ಬಾಟಲಿ ಅಥವಾ ಯಾವುದೇ ಪ್ರಣಾಳವನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ!';
+          counterBadge.style.display = 'inline-flex';
+          const testedCount = activeSubstances.filter(s => testState[s.id].hibiscusTested).length;
+          countText.textContent = `${testedCount} / ${activeSubstances.length} Tested`;
+        }
+      } else if (currentTab === 'litmus') {
+        if (!simState.litmusPrepared) {
+          title.textContent = 'STAGE B1: PREPARE LITMUS SOLUTION';
+          msgEn.textContent = 'Click the dried lichen powder dish to extract natural purple litmus dye.';
+          msgKn.textContent = 'ನೈಸರ್ಗಿಕ ನೇರಳೆ ಲಿಟ್ಮಸ್ ಬಣ್ಣವನ್ನು ಪಡೆಯಲು ಲೈಕನ್ ಪುಡಿಯ ತಟ್ಟೆಯ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ.';
+          counterBadge.style.display = 'none';
+        } else {
+          title.textContent = 'STAGE B2: LITMUS PAPER DIP & SOLUTION';
+          msgEn.textContent = 'Click RED or BLUE paper stacks to dip in tubes, or click Litmus Solution bottle!';
+          msgKn.textContent = 'ಕೆಂಪು/ನೀಲಿ ಲಿಟ್ಮಸ್ ಕಾಗದವನ್ನು ಪ್ರಣಾಳಗಳಲ್ಲಿ ಅದ್ದಿ ಅಥವಾ ಲಿಟ್ಮಸ್ ಡ್ರಾಪರ್ ಬಳಸಿ ಪರೀಕ್ಷಿಸಿ!';
+          counterBadge.style.display = 'inline-flex';
+          const testedCount = activeSubstances.filter(s => testState[s.id].litmusPaperRedTested || testState[s.id].litmusSolutionTested).length;
+          countText.textContent = `${testedCount} / ${activeSubstances.length} Tested`;
+        }
+      } else {
+        title.textContent = 'STAGE C: COMPARISON MATRIX';
+        msgEn.textContent = 'Review the complete bilingual comparison table and key scientific principles.';
+        msgKn.textContent = 'ಪೂರ್ಣ ತುಲನಾತ್ಮಕ ಕೋಷ್ಟಕ ಮತ್ತು ಮುಖ್ಯ ವೈಜ್ಞಾನಿಕ ತತ್ವಗಳನ್ನು ವೀಕ್ಷಿಸಿ.';
+        counterBadge.style.display = 'none';
+      }
+
+      const hTested = activeSubstances.filter(s => testState[s.id].hibiscusTested).length;
+      const lTested = activeSubstances.filter(s => testState[s.id].litmusPaperRedTested || testState[s.id].litmusSolutionTested).length;
+      document.getElementById('hibiscus-tested-count').textContent = `${hTested}/${activeSubstances.length}`;
+      document.getElementById('litmus-tested-count').textContent = `${lTested}/${activeSubstances.length}`;
+    }
+
+    // 1. Pluck Petal Action
+    function pluckPetal(petalMesh) {
+      if (simState.animating || petalMesh.userData.plucked) return;
+      simState.animating = true;
+      audio.init();
+      audio.playPluck();
+
+      petalMesh.userData.plucked = true;
+      const startPos = petalMesh.position.clone();
+      const targetPos = new THREE.Vector3(
+        -4.5 + (Math.random() - 0.5) * 0.4,
+        0.28,
+        0.4 + (Math.random() - 0.5) * 0.4
+      );
+
+      const startTime = performance.now();
+      const duration = 650;
+
+      function anim(t) {
+        const elapsed = t - startTime;
+        const p = Math.min(elapsed / duration, 1.0);
+        const ease = 1 - Math.pow(1 - p, 3);
+
+        petalMesh.position.x = THREE.MathUtils.lerp(startPos.x - 7.0, targetPos.x, ease);
+        petalMesh.position.z = THREE.MathUtils.lerp(startPos.z + 0.4, targetPos.z, ease);
+        petalMesh.position.y = THREE.MathUtils.lerp(startPos.y, targetPos.y, ease) + Math.sin(p * Math.PI) * 1.2;
+        petalMesh.rotation.x += 0.08;
+        petalMesh.rotation.y += 0.08;
+
+        if (p < 1.0) {
+          requestAnimationFrame(anim);
+        } else {
+          petalMesh.visible = false;
+          simState.petalsPlucked++;
+          if (mortarPetalMeshes[simState.petalsPlucked - 1]) {
+            mortarPetalMeshes[simState.petalsPlucked - 1].visible = true;
+          }
+          if (simState.petalsPlucked >= 4) {
+            simState.hibiscusStage = 'A1';
+            audio.playSuccess();
+          }
+          simState.animating = false;
+          updateGuidanceCard();
+        }
+      }
+      requestAnimationFrame(anim);
+    }
+
+    // 2. Crush Petals Action
+    function crushPetals() {
+      if (simState.animating || simState.hibiscusStage !== 'A1') return;
+      simState.animating = true;
+      audio.init();
+      audio.playCrush();
+
+      const origPestleY = 0.35;
+      const startTime = performance.now();
+      const duration = 400;
+
+      function anim(t) {
+        const elapsed = t - startTime;
+        const p = Math.min(elapsed / duration, 1.0);
+        pestleGroup.position.y = origPestleY - Math.sin(p * Math.PI) * 0.22;
+        pestleGroup.scale.y = 1.0 - Math.sin(p * Math.PI) * 0.15;
+
+        if (p < 1.0) {
+          requestAnimationFrame(anim);
+        } else {
+          pestleGroup.position.y = origPestleY;
+          pestleGroup.scale.set(1, 1, 1);
+          simState.crushCount++;
+
+          mortarPetalMeshes.forEach(mesh => {
+            mesh.material.color.lerp(new THREE.Color('#380310'), 0.35);
+          });
+
+          if (simState.crushCount >= 3) {
+            simState.hibiscusStage = 'A2';
+            audio.playSuccess();
+          }
+          simState.animating = false;
+          updateGuidanceCard();
+        }
+      }
+      requestAnimationFrame(anim);
+    }
+
+    // 3. Add Warm Water Action
+    function addWarmWater() {
+      if (simState.animating || simState.hibiscusStage !== 'A2') return;
+      simState.animating = true;
+      audio.init();
+      audio.playPour();
+
+      const origPos = beakerGroup.position.clone();
+      const targetPos = new THREE.Vector3(-4.5, 1.6, 0.4);
+      const startTime = performance.now();
+      const duration = 2200;
+
+      function anim(t) {
+        const elapsed = t - startTime;
+        const p = Math.min(elapsed / duration, 1.0);
+
+        if (p < 0.25) {
+          beakerGroup.position.lerpVectors(origPos, targetPos, p / 0.25);
+        } else if (p < 0.75) {
+          const pPour = (p - 0.25) / 0.5;
+          beakerGroup.rotation.z = Math.sin(pPour * Math.PI) * 0.85;
+          mortarLiquidMat.uniforms.uOpacity.value = pPour * 0.88;
+          beakerWater.scale.y = 1.0 - pPour * 0.45;
+        } else {
+          const pRet = (p - 0.75) / 0.25;
+          beakerGroup.rotation.z = 0;
+          beakerGroup.position.lerpVectors(targetPos, origPos, pRet);
+        }
+
+        if (p < 1.0) {
+          requestAnimationFrame(anim);
+        } else {
+          beakerGroup.position.copy(origPos);
+          beakerGroup.rotation.set(0, 0, 0);
+          simState.waterAdded = true;
+          simState.hibiscusStage = 'A3';
+          audio.playSuccess();
+          simState.animating = false;
+          updateGuidanceCard();
+        }
+      }
+      requestAnimationFrame(anim);
+    }
+
+    // 4. Filter & Bottle Action
+    function filterAndBottle() {
+      if (simState.animating || simState.hibiscusStage !== 'A3') return;
+      simState.animating = true;
+      audio.init();
+      audio.playPour();
+
+      const origPos = mortarGroup.position.clone();
+      const targetPos = new THREE.Vector3(-2.0, 2.8, -0.6);
+      const startTime = performance.now();
+      const duration = 2400;
+
+      function anim(t) {
+        const elapsed = t - startTime;
+        const p = Math.min(elapsed / duration, 1.0);
+
+        if (p < 0.25) {
+          mortarGroup.position.lerpVectors(origPos, targetPos, p / 0.25);
+        } else if (p < 0.75) {
+          const pFilter = (p - 0.25) / 0.5;
+          mortarGroup.rotation.z = Math.sin(pFilter * Math.PI) * 0.7;
+          bottleLiquidMat.uniforms.uOpacity.value = pFilter * 0.92;
+          mortarLiquidMat.uniforms.uOpacity.value = 0.88 * (1.0 - pFilter);
+        } else {
+          const pRet = (p - 0.75) / 0.25;
+          mortarGroup.rotation.z = 0;
+          mortarGroup.position.lerpVectors(targetPos, origPos, pRet);
+        }
+
+        if (p < 1.0) {
+          requestAnimationFrame(anim);
+        } else {
+          mortarGroup.position.copy(origPos);
+          mortarGroup.rotation.set(0, 0, 0);
+          simState.isFiltered = true;
+          simState.hibiscusStage = 'A4';
+          audio.playSuccess();
+          simState.animating = false;
+          updateGuidanceCard();
+        }
+      }
+      requestAnimationFrame(anim);
+    }
+
+    // 5. Test Tube with Hibiscus Dropper
+    function testTubeHibiscus(index) {
+      if (simState.animating) return;
+      if (simState.hibiscusStage !== 'A4') {
+        alert('Please complete petals extraction steps (A0 → A3) first!');
+        return;
+      }
+      const targetTube = testTubesA[index];
+      if (!targetTube) return;
+
+      simState.animating = true;
+      audio.init();
+
+      const dropperOrigPos = hibiscusBottleGroup.position.clone();
+      const startTime = performance.now();
+      const duration = 2600;
+
+      function anim(t) {
+        const elapsed = t - startTime;
+        const p = Math.min(elapsed / duration, 1.0);
+
+        if (p < 0.2) {
+          hibiscusBottleGroup.position.lerpVectors(dropperOrigPos, new THREE.Vector3(targetTube.container.position.x - 2.5, 2.2, targetTube.container.position.z + 2.4), p / 0.2);
+        } else if (p < 0.8) {
+          const pDrops = (p - 0.2) / 0.6;
+          targetTube.liquidMat.uniforms.uColorMix.value = pDrops;
+          targetTube.liquidMat.uniforms.uRipple.value = 1.0;
+
+          if (elapsed > 800 && elapsed < 850) {
+            audio.playPlink(1);
+          } else if (elapsed > 1300 && elapsed < 1350) {
+            audio.playPlink(2);
+          } else if (elapsed > 1800 && elapsed < 1850) {
+            audio.playPlink(3);
+          }
+        } else {
+          const pRet = (p - 0.8) / 0.2;
+          targetTube.liquidMat.uniforms.uRipple.value = 0.0;
+          hibiscusBottleGroup.position.lerpVectors(new THREE.Vector3(targetTube.container.position.x - 2.5, 2.2, targetTube.container.position.z + 2.4), dropperOrigPos, pRet);
+        }
+
+        if (p < 1.0) {
+          requestAnimationFrame(anim);
+        } else {
+          hibiscusBottleGroup.position.copy(dropperOrigPos);
+          testState[targetTube.substance.id].hibiscusTested = true;
+          testState[targetTube.substance.id].hibiscusMix = 1.0;
+
+          const isAcid = targetTube.substance.category === 'acid';
+          const isBase = targetTube.substance.category === 'base';
+          const badgeClass = isAcid ? 'tested-acid' : (isBase ? 'tested-base' : 'tested-neutral');
+          targetTube.labelDiv.className = `label-3d ${badgeClass}`;
+          targetTube.labelDiv.innerHTML = `
+            <div class="label-title">
+              <span class="swatch-indicator" style="background: ${targetTube.substance.hibiscusColorHex};"></span>
+              ${targetTube.substance.nameEn}
+            </div>
+            <div class="label-sub" style="color: ${targetTube.substance.hibiscusColorHex}; font-weight: 700;">
+              🌺 ${targetTube.substance.hibiscusResultEn} (${targetTube.substance.typeEn})
+            </div>
+          `;
+
+          audio.playSuccess();
+          simState.animating = false;
+          updateGuidanceCard();
+          populateMatrixTable();
+        }
+      }
+      requestAnimationFrame(anim);
+    }
+
+    // 6. Station B: Prepare Litmus Solution Action
+    function prepareLitmus() {
+      if (simState.animating || simState.litmusPrepared) return;
+      simState.animating = true;
+      audio.init();
+      audio.playGrind();
+
+      const startTime = performance.now();
+      const duration = 1800;
+
+      function anim(t) {
+        const elapsed = t - startTime;
+        const p = Math.min(elapsed / duration, 1.0);
+        lichenPestle.rotation.z = Math.sin(p * Math.PI * 6) * 0.3;
+        litmusBottleLiquidMat.uniforms.uOpacity.value = p * 0.92;
+
+        if (p < 1.0) {
+          requestAnimationFrame(anim);
+        } else {
+          lichenPestle.rotation.set(-0.35, 0, 0.45);
+          simState.litmusPrepared = true;
+          simState.litmusStage = 'B2';
+          audio.playSuccess();
+          simState.animating = false;
+          updateGuidanceCard();
+        }
+      }
+      requestAnimationFrame(anim);
+    }
+
+    // 7. Station B: Dip Litmus Paper Action
+    function dipLitmusPaper(paperType, tubeIndex) {
+      if (simState.animating) return;
+      const targetTube = testTubesB[tubeIndex];
+      if (!targetTube) return;
+
+      simState.animating = true;
+      audio.init();
+      audio.playPaperDip();
+
+      const isRed = paperType === 'red';
+      const substance = targetTube.substance;
+      let targetColorHex = isRed ? '#ef4444' : '#2563eb';
+
+      if (isRed && substance.category === 'base') {
+        targetColorHex = '#2563eb';
+      } else if (!isRed && substance.category === 'acid') {
+        targetColorHex = '#ef4444';
+      }
+
+      activePaperStrip.material.dispose();
+      activePaperStrip.material = createPaperShaderMaterial(
+        isRed ? '#ef4444' : '#2563eb',
+        targetColorHex
+      );
+      activePaperStrip.visible = true;
+
+      const tubePos = targetTube.container.position.clone().add(rackBGroup.position);
+      activePaperStrip.position.set(tubePos.x, 2.2, tubePos.z);
+      activePaperStrip.rotation.set(0, 0, 0);
+
+      const startTime = performance.now();
+      const duration = 2400;
+
+      function anim(t) {
+        const elapsed = t - startTime;
+        const p = Math.min(elapsed / duration, 1.0);
+
+        if (p < 0.25) {
+          const pDip = p / 0.25;
+          activePaperStrip.position.y = 2.2 - pDip * 1.1;
+        } else if (p < 0.65) {
+          const pDiff = (p - 0.25) / 0.4;
+          activePaperStrip.material.uniforms.uProgress.value = pDiff;
+        } else if (p < 0.8) {
+          const pLift = (p - 0.65) / 0.15;
+          activePaperStrip.position.y = 1.1 + pLift * 1.1;
+        } else {
+          const pFly = (p - 0.8) / 0.2;
+          const boardTargetPos = new THREE.Vector3(7.5 + (Math.random() - 0.5) * 0.8, 1.4 + (Math.random() - 0.5) * 0.6, -1.55);
+          activePaperStrip.position.lerp(boardTargetPos, pFly);
+        }
+
+        if (p < 1.0) {
+          requestAnimationFrame(anim);
+        } else {
+          activePaperStrip.visible = false;
+          audio.playPin();
+
+          const pinnedMesh = new THREE.Mesh(activeStripGeo.clone(), activePaperStrip.material.clone());
+          pinnedMesh.scale.set(0.65, 0.65, 0.65);
+          const pinX = (pinnedStrips.length % 5) * 0.45 - 0.9;
+          const pinY = 1.6 - Math.floor(pinnedStrips.length / 5) * 0.75;
+          pinnedMesh.position.set(pinX, pinY, 0.06);
+          pinboardGroup.add(pinnedMesh);
+          pinnedStrips.push(pinnedMesh);
+
+          const pushpin = new THREE.Mesh(new THREE.SphereGeometry(0.04, 12, 12), new THREE.MeshStandardMaterial({ color: '#f59e0b', metalness: 0.8 }));
+          pushpin.position.set(pinX, pinY + 0.32, 0.1);
+          pinboardGroup.add(pushpin);
+
+          if (isRed) {
+            testState[substance.id].litmusPaperRedTested = true;
+          } else {
+            testState[substance.id].litmusPaperBlueTested = true;
+          }
+
+          targetTube.labelDiv.innerHTML = `
+            <div class="label-title">
+              <span class="swatch-indicator" style="background: ${targetColorHex};"></span>
+              ${substance.nameEn}
+            </div>
+            <div class="label-sub" style="color: ${targetColorHex}; font-weight: 700;">
+              📜 ${isRed ? 'Red' : 'Blue'} Paper: ${isRed ? substance.litmusPaperRed : substance.litmusPaperBlue}
+            </div>
+          `;
+
+          audio.playSuccess();
+          simState.animating = false;
+          updateGuidanceCard();
+          populateMatrixTable();
+        }
+      }
+      requestAnimationFrame(anim);
+    }
+
+    // 8. Station B: Liquid Litmus Dropper Test Action
+    function testTubeLitmusSolution(index) {
+      if (simState.animating) return;
+      if (!simState.litmusPrepared) {
+        alert('Please extract Litmus Solution (Stage B1) first!');
+        return;
+      }
+      const targetTube = testTubesB[index];
+      if (!targetTube) return;
+
+      simState.animating = true;
+      audio.init();
+
+      const dropperOrigPos = litmusLiquidGroup.position.clone();
+      const startTime = performance.now();
+      const duration = 2400;
+
+      function anim(t) {
+        const elapsed = t - startTime;
+        const p = Math.min(elapsed / duration, 1.0);
+
+        if (p < 0.2) {
+          litmusLiquidGroup.position.lerpVectors(dropperOrigPos, new THREE.Vector3(targetTube.container.position.x + 2.5, 2.2, targetTube.container.position.z + 2.4), p / 0.2);
+        } else if (p < 0.8) {
+          const pDrops = (p - 0.2) / 0.6;
+          targetTube.liquidMat.uniforms.uColorMix.value = pDrops;
+          targetTube.liquidMat.uniforms.uRipple.value = 1.0;
+
+          if (elapsed > 800 && elapsed < 850) {
+            audio.playPlink(1);
+          } else if (elapsed > 1300 && elapsed < 1350) {
+            audio.playPlink(2);
+          } else if (elapsed > 1800 && elapsed < 1850) {
+            audio.playPlink(3);
+          }
+        } else {
+          const pRet = (p - 0.8) / 0.2;
+          targetTube.liquidMat.uniforms.uRipple.value = 0.0;
+          litmusLiquidGroup.position.lerpVectors(new THREE.Vector3(targetTube.container.position.x + 2.5, 2.2, targetTube.container.position.z + 2.4), dropperOrigPos, pRet);
+        }
+
+        if (p < 1.0) {
+          requestAnimationFrame(anim);
+        } else {
+          litmusLiquidGroup.position.copy(dropperOrigPos);
+          testState[targetTube.substance.id].litmusSolutionTested = true;
+
+          const isAcid = targetTube.substance.category === 'acid';
+          const isBase = targetTube.substance.category === 'base';
+          const badgeClass = isAcid ? 'tested-acid' : (isBase ? 'tested-base' : 'tested-neutral');
+          targetTube.labelDiv.className = `label-3d ${badgeClass}`;
+          targetTube.labelDiv.innerHTML = `
+            <div class="label-title">
+              <span class="swatch-indicator" style="background: ${targetTube.substance.litmusSolutionHex};"></span>
+              ${targetTube.substance.nameEn}
+            </div>
+            <div class="label-sub" style="color: ${targetTube.substance.litmusSolutionHex}; font-weight: 700;">
+              📜 Litmus: ${targetTube.substance.litmusSolutionResultEn} (${targetTube.substance.typeEn})
+            </div>
+          `;
+
+          audio.playSuccess();
+          simState.animating = false;
+          updateGuidanceCard();
+          populateMatrixTable();
+        }
+      }
+      requestAnimationFrame(anim);
+    }
+
+    /* =========================================================================
+       RAYCASTER & POINTER INTERACTION HANDLER
+       ========================================================================= */
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const tooltip = document.getElementById('cursor-tooltip');
+
+    window.addEventListener('pointermove', (e) => {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+      tooltip.style.left = `${e.clientX}px`;
+      tooltip.style.top = `${e.clientY}px`;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(scene.children, true);
+
+      let hovered = null;
+      for (let i = 0; i < intersects.length; i++) {
+        const obj = intersects[i].object;
+        if (obj.userData && (obj.userData.isPetal || obj.userData.isMortar || obj.userData.isPestle ||
+            obj.userData.isBeaker || obj.userData.isFunnel || obj.userData.isHibiscusDropper ||
+            obj.userData.isLichenDish || obj.userData.isRedLitmusStack || obj.userData.isBlueLitmusStack ||
+            obj.userData.isLitmusDropper || obj.userData.isTubeA || obj.userData.isTubeB)) {
+          hovered = obj;
+          break;
+        }
+      }
+
+      if (hovered) {
+        document.body.style.cursor = 'pointer';
+        tooltip.style.display = 'block';
+        if (hovered.userData.isPetal) {
+          tooltip.textContent = '🌺 Hibiscus Petal (Click to pluck)';
+        } else if (hovered.userData.isMortar || hovered.userData.isPestle) {
+          tooltip.textContent = '🥣 Mortar & Pestle (Click to crush)';
+        } else if (hovered.userData.isBeaker) {
+          tooltip.textContent = '♨️ Warm Water Beaker (Click to add)';
+        } else if (hovered.userData.isFunnel) {
+          tooltip.textContent = '🧪 Filter Funnel (Click to bottle)';
+        } else if (hovered.userData.isHibiscusDropper) {
+          tooltip.textContent = '🌺 Hibiscus Indicator Dropper';
+        } else if (hovered.userData.isLichenDish) {
+          tooltip.textContent = '🧫 Lichen Powder (Click to grind)';
+        } else if (hovered.userData.isRedLitmusStack) {
+          tooltip.textContent = '📑 Red Litmus Strips (Click to dip)';
+        } else if (hovered.userData.isBlueLitmusStack) {
+          tooltip.textContent = '📑 Blue Litmus Strips (Click to dip)';
+        } else if (hovered.userData.isLitmusDropper) {
+          tooltip.textContent = '📜 Litmus Solution Dropper';
+        } else if (hovered.userData.isTubeA) {
+          const s = ALL_SUBSTANCES.find(item => item.id === hovered.userData.substanceId);
+          tooltip.textContent = `🧪 ${s.nameEn} (${s.typeEn})`;
+        } else if (hovered.userData.isTubeB) {
+          const s = ALL_SUBSTANCES.find(item => item.id === hovered.userData.substanceId);
+          tooltip.textContent = `🧪 ${s.nameEn} (${s.typeEn})`;
+        }
+      } else {
+        document.body.style.cursor = 'default';
+        tooltip.style.display = 'none';
+      }
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target.closest('.interactive') || e.target.closest('.modal-content')) return;
+
+      audio.init();
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(scene.children, true);
+
+      for (let i = 0; i < intersects.length; i++) {
+        const obj = intersects[i].object;
+
+        if (obj.userData && obj.userData.isPetal) {
+          pluckPetal(obj);
+          break;
+        }
+
+        if (obj.userData && (obj.userData.isMortar || obj.userData.isPestle)) {
+          crushPetals();
+          break;
+        }
+
+        if (obj.userData && obj.userData.isBeaker) {
+          addWarmWater();
+          break;
+        }
+
+        if (obj.userData && obj.userData.isFunnel) {
+          filterAndBottle();
+          break;
+        }
+
+        if (obj.userData && obj.userData.isTubeA) {
+          testTubeHibiscus(obj.userData.index);
+          break;
+        }
+
+        if (obj.userData && obj.userData.isLichenDish) {
+          prepareLitmus();
+          break;
+        }
+
+        if (obj.userData && obj.userData.isRedLitmusStack) {
+          const untestedIdx = testTubesB.findIndex(t => !testState[t.substance.id].litmusPaperRedTested);
+          dipLitmusPaper('red', untestedIdx !== -1 ? untestedIdx : 0);
+          break;
+        }
+
+        if (obj.userData && obj.userData.isBlueLitmusStack) {
+          const untestedIdx = testTubesB.findIndex(t => !testState[t.substance.id].litmusPaperBlueTested);
+          dipLitmusPaper('blue', untestedIdx !== -1 ? untestedIdx : 0);
+          break;
+        }
+
+        if (obj.userData && obj.userData.isLitmusDropper) {
+          const untestedIdx = testTubesB.findIndex(t => !testState[t.substance.id].litmusSolutionTested);
+          testTubeLitmusSolution(untestedIdx !== -1 ? untestedIdx : 0);
+          break;
+        }
+
+        if (obj.userData && obj.userData.isTubeB) {
+          const s = testState[obj.userData.substanceId];
+          if (!s.litmusPaperBlueTested) {
+            dipLitmusPaper('blue', obj.userData.index);
+          } else if (!s.litmusPaperRedTested) {
+            dipLitmusPaper('red', obj.userData.index);
+          } else {
+            testTubeLitmusSolution(obj.userData.index);
+          }
+          break;
+        }
+      }
+    });
+
+    /* =========================================================================
+       DYNAMIC MATRIX TABLE POPULATION
+       ========================================================================= */
+    const matrixTbody = document.getElementById('matrix-tbody');
+
+    function populateMatrixTable(filterCategory = 'all') {
+      matrixTbody.innerHTML = '';
+
+      activeSubstances.forEach((substance, idx) => {
+        if (filterCategory !== 'all' && substance.category !== filterCategory) return;
+
+        const state = testState[substance.id];
+        const tr = document.createElement('tr');
+        tr.dataset.substanceId = substance.id;
+
+        let badgeClass = 'badge-acid';
+        if (substance.category === 'base') badgeClass = 'badge-base';
+        if (substance.category === 'neutral') badgeClass = 'badge-neutral';
+
+        tr.innerHTML = `
+          <td><strong>${idx + 1}</strong></td>
+          <td>
+            <strong>${substance.nameEn}</strong><br>
+            <span style="font-size: 0.76rem; color: #cbd5e1;">${substance.nameKn}</span>
+          </td>
+          <td>
+            <span class="swatch" style="background: ${substance.initialColorHex};"></span>
+            ${substance.initialNameEn}
+          </td>
+          <td>
+            ${state.hibiscusTested ? `
+              <span class="swatch" style="background: ${substance.hibiscusColorHex};"></span>
+              <strong>${substance.hibiscusResultEn}</strong><br>
+              <span style="font-size: 0.74rem; color: #cbd5e1;">${substance.hibiscusResultKn}</span>
+            ` : `<span style="color: var(--text-muted); font-style: italic;">Pending (ಪರೀಕ್ಷಿಸಿ)</span>`}
+          </td>
+          <td>
+            ${state.litmusPaperRedTested ? `
+              <span class="swatch" style="background: ${substance.category === 'base' ? '#2563eb' : '#ef4444'};"></span>
+              ${substance.litmusPaperRed}
+            ` : `<span style="color: var(--text-muted); font-style: italic;">Pending</span>`}
+          </td>
+          <td>
+            ${state.litmusPaperBlueTested ? `
+              <span class="swatch" style="background: ${substance.category === 'acid' ? '#ef4444' : '#2563eb'};"></span>
+              ${substance.litmusPaperBlue}
+            ` : `<span style="color: var(--text-muted); font-style: italic;">Pending</span>`}
+          </td>
+          <td>
+            ${state.litmusSolutionTested ? `
+              <span class="swatch" style="background: ${substance.litmusSolutionHex};"></span>
+              <strong>${substance.litmusSolutionResultEn}</strong>
+            ` : `<span style="color: var(--text-muted); font-style: italic;">Pending</span>`}
+          </td>
+          <td>
+            <span class="badge-cell ${badgeClass}">
+              ${substance.typeEn} (${substance.typeKn})
+            </span>
+          </td>
+        `;
+
+        tr.addEventListener('click', () => {
+          document.getElementById('results-modal').classList.remove('active');
+          const tubeObj = (currentTab === 'litmus') ? testTubesB[idx] : testTubesA[idx];
+          if (tubeObj) {
+            const worldPos = new THREE.Vector3();
+            tubeObj.container.getWorldPosition(worldPos);
+            targetControlsTarget.copy(worldPos);
+            targetCamPos.set(worldPos.x, worldPos.y + 1.8, worldPos.z + 3.8);
+            controls.target.copy(targetControlsTarget);
+          }
+        });
+
+        matrixTbody.appendChild(tr);
+      });
+    }
+
+    populateMatrixTable();
+
+    /* =========================================================================
+       UI EVENTS (Tabs, Modals, Audio, Reset, Language)
+       ========================================================================= */
+    function setTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+      if (tab === 'hibiscus') {
+        document.getElementById('tab-hibiscus').classList.add('active');
+        targetCamPos.copy(cameraTargets.hibiscus.pos);
+        targetControlsTarget.copy(cameraTargets.hibiscus.lookAt);
+      } else if (tab === 'litmus') {
+        document.getElementById('tab-litmus').classList.add('active');
+        targetCamPos.copy(cameraTargets.litmus.pos);
+        targetControlsTarget.copy(cameraTargets.litmus.lookAt);
+      } else if (tab === 'compare') {
+        document.getElementById('tab-compare').classList.add('active');
+        targetCamPos.copy(cameraTargets.compare.pos);
+        targetControlsTarget.copy(cameraTargets.compare.lookAt);
+        document.getElementById('results-modal').classList.add('active');
+        populateMatrixTable();
+      }
+      updateGuidanceCard();
+    }
+
+    document.getElementById('tab-hibiscus').addEventListener('click', () => setTab('hibiscus'));
+    document.getElementById('tab-litmus').addEventListener('click', () => setTab('litmus'));
+    document.getElementById('tab-compare').addEventListener('click', () => setTab('compare'));
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '1') setTab('hibiscus');
+      if (e.key === '2') setTab('litmus');
+      if (e.key === '3') setTab('compare');
+      if (e.key === 'r' || e.key === 'R') resetAll();
+    });
+
+    document.getElementById('view-matrix-btn').addEventListener('click', () => {
+      document.getElementById('results-modal').classList.add('active');
+      populateMatrixTable();
+    });
+
+    document.getElementById('close-modal-btn').addEventListener('click', () => {
+      document.getElementById('results-modal').classList.remove('active');
+    });
+
+    document.getElementById('modal-resume-btn').addEventListener('click', () => {
+      document.getElementById('results-modal').classList.remove('active');
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        populateMatrixTable(btn.dataset.filter);
+      });
+    });
+
+    document.getElementById('roster-toggle-btn').addEventListener('click', () => {
+      isExpandedRoster = !isExpandedRoster;
+      activeSubstances = isExpandedRoster ? ALL_SUBSTANCES : ALL_SUBSTANCES.slice(0, 8);
+      document.getElementById('roster-btn-text').textContent = isExpandedRoster
+        ? '13 Samples (Expanded)'
+        : '8 Samples (Normal)';
+      buildTestTubes();
+      populateMatrixTable();
+      updateGuidanceCard();
+    });
+
+    const langBtn = document.getElementById('lang-btn');
+    const langText = document.getElementById('lang-text');
+    let langIndex = 0;
+    const langModes = ['both', 'en', 'kn'];
+    const langLabels = ['EN + ಕನ್ನಡ', 'English', 'ಕನ್ನಡ'];
+
+    langBtn.addEventListener('click', () => {
+      langIndex = (langIndex + 1) % 3;
+      document.body.className = `lang-${langModes[langIndex]}`;
+      langText.textContent = langLabels[langIndex];
+    });
+
+    const soundBtn = document.getElementById('sound-btn');
+    const soundIcon = document.getElementById('sound-icon');
+    let soundEnabled = false;
+
+    soundBtn.addEventListener('click', () => {
+      audio.init();
+      soundEnabled = !soundEnabled;
+      audio.setMute(!soundEnabled);
+      soundIcon.textContent = soundEnabled ? '🔊' : '🔇';
+      soundBtn.classList.toggle('active', soundEnabled);
+    });
+
+    document.getElementById('cam-reset-btn').addEventListener('click', () => {
+      if (currentTab === 'hibiscus') {
+        targetCamPos.copy(cameraTargets.hibiscus.pos);
+        targetControlsTarget.copy(cameraTargets.hibiscus.lookAt);
+      } else if (currentTab === 'litmus') {
+        targetCamPos.copy(cameraTargets.litmus.pos);
+        targetControlsTarget.copy(cameraTargets.litmus.lookAt);
+      } else {
+        targetCamPos.copy(cameraTargets.compare.pos);
+        targetControlsTarget.copy(cameraTargets.compare.lookAt);
+      }
+    });
+
+    document.getElementById('auto-step-btn').addEventListener('click', () => {
+      audio.init();
+      if (currentTab === 'hibiscus') {
+        if (simState.hibiscusStage === 'A0') {
+          pluckablePetals.forEach(p => pluckPetal(p));
+        } else if (simState.hibiscusStage === 'A1') {
+          crushPetals();
+          crushPetals();
+          crushPetals();
+        } else if (simState.hibiscusStage === 'A2') {
+          addWarmWater();
+        } else if (simState.hibiscusStage === 'A3') {
+          filterAndBottle();
+        } else if (simState.hibiscusStage === 'A4') {
+          testTubesA.forEach((_, idx) => testTubeHibiscus(idx));
+        }
+      } else if (currentTab === 'litmus') {
+        if (!simState.litmusPrepared) {
+          prepareLitmus();
+        } else {
+          testTubesB.forEach((_, idx) => {
+            dipLitmusPaper(idx % 2 === 0 ? 'red' : 'blue', idx);
+            testTubeLitmusSolution(idx);
+          });
+        }
+      }
+    });
+
+    function resetAll() {
+      audio.init();
+      resetTestState();
+      simState.petalsPlucked = 0;
+      simState.crushCount = 0;
+      simState.waterAdded = false;
+      simState.isFiltered = false;
+      simState.litmusPrepared = false;
+      simState.hibiscusStage = 'A0';
+      simState.litmusStage = 'B1';
+      simState.animating = false;
+
+      pluckablePetals.forEach(p => {
+        p.visible = true;
+        p.userData.plucked = false;
+        p.scale.setScalar(0.9);
+      });
+
+      mortarPetalMeshes.forEach(p => {
+        p.visible = false;
+        p.material.color.set('#e11d48');
+      });
+
+      mortarLiquidMat.uniforms.uOpacity.value = 0.0;
+      bottleLiquidMat.uniforms.uOpacity.value = 0.0;
+      litmusBottleLiquidMat.uniforms.uOpacity.value = 0.0;
+      beakerWater.scale.y = 1.0;
+
+      pinnedStrips.forEach(p => pinboardGroup.remove(p));
+      pinnedStrips.length = 0;
+
+      buildTestTubes();
+      populateMatrixTable();
+      document.getElementById('results-modal').classList.remove('active');
+      setTab('hibiscus');
+      audio.playSuccess();
+    }
+
+    document.getElementById('reset-btn').addEventListener('click', resetAll);
+    document.getElementById('modal-reset-btn').addEventListener('click', resetAll);
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      labelRenderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    /* =========================================================================
+       MAIN ANIMATION LOOP
+       ========================================================================= */
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const delta = clock.getDelta();
+      const time = clock.getElapsedTime();
+
+      camera.position.lerp(targetCamPos, 0.05);
+      controls.target.lerp(targetControlsTarget, 0.05);
+      controls.update();
+
+      const steamPos = steamGeo.attributes.position.array;
+      for (let s = 0; s < steamParticleCount; s++) {
+        steamPos[s * 3 + 1] += 0.012;
+        if (steamPos[s * 3 + 1] > 2.8) {
+          steamPos[s * 3 + 1] = 1.3;
+          steamPos[s * 3] = (Math.random() - 0.5) * 0.8;
+          steamPos[s * 3 + 2] = (Math.random() - 0.5) * 0.8;
+        }
+      }
+      steamGeo.attributes.position.needsUpdate = true;
+
+      testTubesA.forEach(t => {
+        t.liquidMat.uniforms.uTime.value = time;
+      });
+      testTubesB.forEach(t => {
+        t.liquidMat.uniforms.uTime.value = time;
+      });
+      mortarLiquidMat.uniforms.uTime.value = time;
+
+      renderer.render(scene, camera);
+      labelRenderer.render(scene, camera);
+    }
+
+    animate();
+    updateGuidanceCard();
+  </script>
+</body>
+</html>
